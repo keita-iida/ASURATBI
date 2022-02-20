@@ -1,0 +1,52 @@
+Package: ASURATBI
+Type: Package
+Title: A pipeline especially built for computing several single-cell datasets
+Version: 0.0.1
+Authors@R: c(person("Keita", "Iida", email = "kiida@protein.osaka-u.ac.jp",
+             role = c("aut", "cre"),
+             comment = c(ORCID = "0000-0002-1076-830X")),
+             person("Johannes Nicolaus", "Wibisana",
+                    email = "nico@protein.osaka-u.ac.jp", role = c("ctb")))
+Description: ASURATBI is a computational pipeline especially built for computing
+    single-cell and spatial transcriptome datasets for our paper publications.
+    ASURATBI is a developed version of ASURAT, using several informal packages
+    and additional functions. Here, small cell lung cancer, peripheral blood
+    mononuclear cells, and pancreatic ductal adenocarcinoma data are analyzed.
+License: GPL-3 + file LICENSE
+biocViews: GeneExpression, SingleCell, Sequencing, Clustering, GeneSignaling
+VignetteBuilder: knitr
+Encoding: UTF-8
+LazyData: TRUE
+Depends:
+    R (>= 4.0.0)
+Imports:
+    SingleCellExperiment,
+    SummarizedExperiment,
+    S4Vectors,
+    Rcpp (>= 1.0.7),
+    cluster,
+    utils,
+    ggplot2,
+    plot3D,
+    ComplexHeatmap,
+    circlize,
+    grid,
+    grDevices,
+    graphics
+Suggests:
+    dplyr,
+    bayNorm,
+    Rtsne,
+    umap,
+    destiny,
+    Seurat,
+    AnnotationDbi,
+    BiocGenerics,
+    stringr,
+    org.Hs.eg.db,
+    org.Mm.eg.db,
+    knitr,
+    rmarkdown
+RoxygenNote: 7.1.2
+LinkingTo:
+    Rcpp

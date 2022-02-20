@@ -1,0 +1,13 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+ASURATBI.Rproj
+backup
+figures
+rawdata
+
+src/*.o
+src/*.so
+src/*.dll
+
