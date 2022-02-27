@@ -50,7 +50,8 @@ The data can be loaded by the following code:
 pdacrna <- readRDS(url("https://figshare.com/ndownloader/files/34112468"))
 ```
 The data are stored in
-[DOI:10.6084/m9.figshare.19200254](https://figshare.com/account/projects/132986/articles/19200254) and the generating process is described below.
+[DOI:10.6084/m9.figshare.19200254](https://figshare.com/s/866fbf822a4bfab234e6)
+and the generating process is described below.
 
 <br>
 
@@ -90,16 +91,11 @@ rbind(dim(pdacrna[[1]]), dim(pdacrna[[2]]), dim(pdacrna[[3]]),
 
 Add metadata for both variables and samples using ASURAT function
 `add_metadata()`.
-The arguments are
-
-* `sce`: SingleCellExperiment object, and
-* `mitochondria_symbol`: a string representing for mitochondrial genes.
 ```{r, eval = FALSE}
 for(i in seq_len(length(pdacrna))){
   pdacrna[[i]] <- add_metadata(sce = pdacrna[[i]], mitochondria_symbol = "^MT-")
 }
 ```
-One can check the results in `rowData(sce)` and `colData(sce)` slots.
 
 Qualities of sample (cell) data are confirmed based on proper visualization of
 `colData(sce)`.
@@ -218,14 +214,9 @@ dim(pdacst)
 
 Add metadata for both variables and samples using ASURAT function
 `add_metadata()`.
-The arguments are
-
-* `sce`: SingleCellExperiment object, and
-* `mitochondria_symbol`: a string representing for mitochondrial genes.
 ```{r, eval = FALSE}
 pdacst <- add_metadata(sce = pdacst, mitochondria_symbol = "^MT-")
 ```
-One can check the results in `rowData(sce)` and `colData(sce)` slots.
 
 ```{r, eval = FALSE, echo = FALSE}
 # Save data.
@@ -317,14 +308,6 @@ ggplot2::ggsave(file = filename, plot = p, dpi = 100, width = 5, height = 5)
 
 ASURAT function `remove_samples()` removes sample (cell) data by setting cutoff
 values for the metadata.
-The arguments are
-
-* `sce`: SingleCellExperiment object,
-* `min_nReads` and `max_nReads`: minimum and maximum number of reads,
-* `min_nGenes` and `max_nGenes`: minimum and maximum number of non-zero
-expressed genes, and
-* `min_percMT` and `max_percMT`: minimum and maximum percent of reads that
-map to mitochondrial genes, respectively.
 ```{r, eval = FALSE}
 pdacrna <- remove_samples(sce = pdacrna, min_nReads = 1000, max_nReads = 10000,
                           min_nGenes = 500, max_nGenes = 1e+10,

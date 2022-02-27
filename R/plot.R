@@ -317,7 +317,7 @@ plot_multiheatmaps <- function(
                                    annotation_name_side = "left")
 
       if(show_row_names){
-        q <- Heatmap(ssm_list[[i]], top_annotation = ha[[i]],
+        q <- Heatmap(as.matrix(ssm_list[[i]]), top_annotation = ha[[i]],
                      # Row data
                      row_names_side = row_names_side, show_row_dend = FALSE,
                      cluster_row_slices = cluster_row_slices,
@@ -332,7 +332,7 @@ plot_multiheatmaps <- function(
                      # Option
                      name = names(ssm_list)[[i]], border = border)
       }else{
-        q <- Heatmap(ssm_list[[i]], top_annotation = ha[[i]],
+        q <- Heatmap(as.matrix(ssm_list[[i]]), top_annotation = ha[[i]],
                      # Row data
                      show_row_names = show_row_names,
                      show_row_dend = show_row_dend,
@@ -350,7 +350,7 @@ plot_multiheatmaps <- function(
       }
     }else{
       if(show_row_names){
-        q <- Heatmap(ssm_list[[i]], top_annotation = NULL,
+        q <- Heatmap(as.matrix(ssm_list[[i]]), top_annotation = NULL,
                      # Row data
                      row_names_side = row_names_side, show_row_dend = FALSE,
                      cluster_row_slices = cluster_row_slices,
@@ -365,7 +365,7 @@ plot_multiheatmaps <- function(
                      # Option
                      name = names(ssm_list)[[i]], border = border)
       }else{
-        q <- Heatmap(ssm_list[[i]], top_annotation = NULL,
+        q <- Heatmap(as.matrix(ssm_list[[i]]), top_annotation = NULL,
                      # Row data
                      show_row_names = show_row_names,
                      show_row_dend = show_row_dend,
@@ -411,7 +411,7 @@ plot_multiheatmaps <- function(
                                     annotation_name_side = "left")
 
       if(show_row_names){
-        q <- Heatmap(gem_list[[i]], top_annotation = ha2[[i]],
+        q <- Heatmap(as.matrix(gem_list[[i]]), top_annotation = ha2[[i]],
                      # Row data
                      row_names_side = row_names_side, show_row_dend = FALSE,
                      cluster_row_slices = cluster_row_slices,
@@ -426,7 +426,7 @@ plot_multiheatmaps <- function(
                      # Option
                      name = names(gem_list)[[i]], border = border)
       }else{
-        q <- Heatmap(gem_list[[i]], top_annotation = ha2[[i]],
+        q <- Heatmap(as.matrix(gem_list[[i]]), top_annotation = ha2[[i]],
                      # Row data
                      show_row_names = show_row_names,
                      show_row_dend = show_row_dend,
@@ -444,7 +444,7 @@ plot_multiheatmaps <- function(
       }
     }else{
       if(show_row_names){
-        q <- Heatmap(gem_list[[i]], top_annotation = NULL,
+        q <- Heatmap(as.matrix(gem_list[[i]]), top_annotation = NULL,
                      # Row data
                      row_names_side = row_names_side, show_row_dend = FALSE,
                      cluster_row_slices = cluster_row_slices,
@@ -459,7 +459,7 @@ plot_multiheatmaps <- function(
                      # Option
                      name = names(gem_list)[[i]], border = border)
       }else{
-        q <- Heatmap(gem_list[[i]], top_annotation = NULL,
+        q <- Heatmap(as.matrix(gem_list[[i]]), top_annotation = NULL,
                      # Row data
                      show_row_names = show_row_names,
                      show_row_dend = show_row_dend,
