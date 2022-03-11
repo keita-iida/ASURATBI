@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot.R
 \name{plot_violin}
 \alias{plot_violin}
-\title{Violin plots of a one-dimensional data with labels and colors.}
+\title{Visualize one-dimensional data by violin plots.}
 \usage{
 plot_violin(dataframe1D = NULL, labels = NULL, colors = NULL)
 }
@@ -19,8 +19,7 @@ corresponding to labels.}
 A ggplot object.
 }
 \description{
-This function outputs violin plots of a one-dimensional data with labels
-  and colors.
+This function visualizes one-dimensional data by violin plots.
 }
 \examples{
 data(pbmcs_eg)

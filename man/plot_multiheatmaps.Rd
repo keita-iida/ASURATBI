@@ -2,14 +2,14 @@
 % Please edit documentation in R/plot.R
 \name{plot_multiheatmaps}
 \alias{plot_multiheatmaps}
-\title{Visualize a three-dimensional data with labels and colors.}
+\title{Visualize multivariate data by heatmaps.}
 \usage{
 plot_multiheatmaps(
   ssm_list = NULL,
   gem_list = NULL,
   ssmlabel_list = NULL,
   gemlabel_list = NULL,
-  nSamples = NULL,
+  nrand_samples = NULL,
   show_row_names = FALSE,
   title = NULL
 )
@@ -29,7 +29,7 @@ annotations and colors.
 The length of the list must be as same as that of gem_list, and
 the order of labels in each list must be as same as those in gem_list.}
 
-\item{nSamples}{Number of samples (cells) used for random sampling.}
+\item{nrand_samples}{Number of samples (cells) used for random sampling.}
 
 \item{show_row_names}{TRUE or FALSE: if TRUE, row names are shown.}
 
@@ -39,7 +39,7 @@ the order of labels in each list must be as same as those in gem_list.}
 A ComplexHeatmap object.
 }
 \description{
-This function visualizes a three-dimensional data with labels and colors.
+This function visualizes multivariate data by heatmaps.
 }
 \examples{
 data(pbmcs_eg)
@@ -65,7 +65,7 @@ label_CC <- data.frame(label = phases, color = NA)
 gemlabel_list <- list(CellCycle = label_CC)
 plot_multiheatmaps(ssm_list = ssm_list, gem_list = gem_list,
                    ssmlabel_list = ssmlabel_list,
-                   gemlabel_list = gemlabel_list, nSamples = 50,
+                   gemlabel_list = gemlabel_list, nrand_samples = 50,
                    show_row_names = FALSE, title = "PBMC")
 
 }

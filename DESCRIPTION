@@ -39,14 +39,17 @@ Suggests:
     Rtsne,
     umap,
     destiny,
+    igraph,
     Seurat,
+    scran,
+    scater,
     AnnotationDbi,
     BiocGenerics,
     stringr,
     org.Hs.eg.db,
-    org.Mm.eg.db,
     knitr,
-    rmarkdown
+    rmarkdown,
+    testthat (>= 3.0.0)
 RoxygenNote: 7.1.2
 LinkingTo:
     Rcpp

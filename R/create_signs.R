@@ -471,23 +471,23 @@ remove_signs_redundant <- function(
             ind_kept <- which(df$SignID == rownames(submat)[i])
             ind_remo <- which(df$SignID == rownames(submat)[j])
             if(k == 1){
-              kept_count = df[ind_kept, ]$CountStrgCorrGene +
-                           df[ind_kept, ]$CountWeakCorrGene
-              remo_count = df[ind_remo, ]$CountStrgCorrGene +
-                           df[ind_remo, ]$CountWeakCorrGene
-              kept_genes = paste(df[ind_kept, ]$StrgCorrGene,
-                                 df[ind_kept, ]$WeakCorrGene, sep = "/")
-              remo_genes = paste(df[ind_remo, ]$StrgCorrGene,
-                                 df[ind_remo, ]$WeakCorrGene, sep = "/")
+              kept_count <- df[ind_kept, ]$CountStrgCorrGene +
+                            df[ind_kept, ]$CountWeakCorrGene
+              remo_count <- df[ind_remo, ]$CountStrgCorrGene +
+                            df[ind_remo, ]$CountWeakCorrGene
+              kept_genes <- paste(df[ind_kept, ]$StrgCorrGene,
+                                  df[ind_kept, ]$WeakCorrGene, sep = "/")
+              remo_genes <- paste(df[ind_remo, ]$StrgCorrGene,
+                                  df[ind_remo, ]$WeakCorrGene, sep = "/")
             }else if(k == 2){
-              kept_count = df[ind_kept, ]$CountVariCorrGene +
-                           df[ind_kept, ]$CountWeakCorrGene
-              remo_count = df[ind_remo, ]$CountVariCorrGene +
-                           df[ind_remo, ]$CountWeakCorrGene
-              kept_genes = paste(df[ind_kept, ]$VariCorrGene,
-                                 df[ind_kept, ]$WeakCorrGene, sep = "/")
-              remo_genes = paste(df[ind_remo, ]$VariCorrGene,
-                                 df[ind_remo, ]$WeakCorrGene, sep = "/")
+              kept_count <- df[ind_kept, ]$CountVariCorrGene +
+                            df[ind_kept, ]$CountWeakCorrGene
+              remo_count <- df[ind_remo, ]$CountVariCorrGene +
+                            df[ind_remo, ]$CountWeakCorrGene
+              kept_genes <- paste(df[ind_kept, ]$VariCorrGene,
+                                  df[ind_kept, ]$WeakCorrGene, sep = "/")
+              remo_genes <- paste(df[ind_remo, ]$VariCorrGene,
+                                  df[ind_remo, ]$WeakCorrGene, sep = "/")
             }
             report[[k]] <- rbind(report[[k]], data.frame(
               Similarity = submat[i, j],
@@ -525,23 +525,23 @@ remove_signs_redundant <- function(
             ind_kept <- which(df$SignID == rownames(submat)[i])
             ind_remo <- which(df$SignID == rownames(submat)[j])
             if(k == 1){
-              kept_count = df[ind_kept, ]$CountStrgCorrGene +
-                           df[ind_kept, ]$CountWeakCorrGene
-              remo_count = df[ind_remo, ]$CountStrgCorrGene +
-                           df[ind_remo, ]$CountWeakCorrGene
-              kept_genes = paste(df[ind_kept, ]$StrgCorrGene,
-                                 df[ind_kept, ]$WeakCorrGene, sep = "/")
-              remo_genes = paste(df[ind_remo, ]$StrgCorrGene,
-                                 df[ind_remo, ]$WeakCorrGene, sep = "/")
+              kept_count <- df[ind_kept, ]$CountStrgCorrGene +
+                            df[ind_kept, ]$CountWeakCorrGene
+              remo_count <- df[ind_remo, ]$CountStrgCorrGene +
+                            df[ind_remo, ]$CountWeakCorrGene
+              kept_genes <- paste(df[ind_kept, ]$StrgCorrGene,
+                                  df[ind_kept, ]$WeakCorrGene, sep = "/")
+              remo_genes <- paste(df[ind_remo, ]$StrgCorrGene,
+                                  df[ind_remo, ]$WeakCorrGene, sep = "/")
             }else if(k == 2){
-              kept_count = df[ind_kept, ]$CountVariCorrGene +
-                           df[ind_kept, ]$CountWeakCorrGene
-              remo_count = df[ind_remo, ]$CountVariCorrGene +
-                           df[ind_remo, ]$CountWeakCorrGene
-              kept_genes = paste(df[ind_kept, ]$VariCorrGene,
-                                 df[ind_kept, ]$WeakCorrGene, sep = "/")
-              remo_genes = paste(df[ind_remo, ]$VariCorrGene,
-                                 df[ind_remo, ]$WeakCorrGene, sep = "/")
+              kept_count <- df[ind_kept, ]$CountVariCorrGene +
+                            df[ind_kept, ]$CountWeakCorrGene
+              remo_count <- df[ind_remo, ]$CountVariCorrGene +
+                            df[ind_remo, ]$CountWeakCorrGene
+              kept_genes <- paste(df[ind_kept, ]$VariCorrGene,
+                                  df[ind_kept, ]$WeakCorrGene, sep = "/")
+              remo_genes <- paste(df[ind_remo, ]$VariCorrGene,
+                                  df[ind_remo, ]$WeakCorrGene, sep = "/")
             }
             report[[k]] <- rbind(report[[k]], data.frame(
               Similarity = submat[i, j],
@@ -732,7 +732,7 @@ select_signs_manually <- function(sce = NULL, keywords = NULL){
   colnames(df_strg) <- tmp
   colnames(df_vari) <- tmp
   if(nrow(df_strg) == 0){
-    stop("SCG is not defined.")
+    stop("SCG is not defined. The keywords may not be included in the data.")
   }else{
     if(nrow(df_vari) == 0){
       metadata(sce)$sign_all <- cbind(CorrType = "SCG", df_strg)

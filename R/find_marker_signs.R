@@ -42,6 +42,18 @@ compute_sepI_clusters <- function(
   if(length(intersect(ident_1, ident_2)) != 0){
     stop("ident_1 and ident_2 must be disjoint.")
   }
+  if((!is.element(ident_1, labels)) || (!is.element(ident_2, labels))){
+    stop("labels must include both ident_1 and ident_2.")
+  }
+  if(dim(sce)[2] != length(labels)){
+    stop("dim(sce)[2] must be equal to length(labels).")
+  }
+  if(!is.null(nrand_samples)){
+    tmp <- sce[, colnames(sce)[which(labels %in% union(ident_1, ident_2))]]
+    if(dim(tmp)[2] < nrand_samples){
+      stop("nrand_samples must be<= the number of identified samples.")
+    }
+  }
   #--------------------------------------------------
   # Preparation
   #--------------------------------------------------
@@ -56,17 +68,23 @@ compute_sepI_clusters <- function(
     nonbaseindex_list <- list()
     for(i in seq_len(length(idents))){
       index_list[[i]] <- which(labels == idents[i])
-      baseindex_list[[i]] <- sample(index_list[[i]], 1, prob = NULL)
+      if(length(index_list[[i]]) == 1){
+        baseindex_list[[i]] <- index_list[[i]]
+      }else{
+        baseindex_list[[i]] <- sample(index_list[[i]], 1, prob = NULL)
+      }
       nonbaseindex_list[[i]] <- setdiff(index_list[[i]], baseindex_list[[i]])
     }
     nonbaseindices <- unlist(nonbaseindex_list)
     n <- nrand_samples - length(idents)
-    nonbaseindices <- sample(unlist(nonbaseindex_list), n, prob = NULL)
+    if(length(nonbaseindices) >= 2){
+      nonbaseindices <- sample(nonbaseindices, n, prob = NULL)
+    }
     final_idents <- union(unlist(baseindex_list), nonbaseindices)
     subsce <- sce[, final_idents]
     popu_1 <- colnames(sce)[final_idents[labels[final_idents] %in% ident_1]]
   }else{
-    subsce <- sce
+    subsce <- sce[, colnames(sce)[which(labels %in% union(ident_1, ident_2))]]
     popu_1 <- colnames(sce)[which(labels %in% ident_1)]
   }
   submat <- as.matrix(assay(subsce, "counts"))
