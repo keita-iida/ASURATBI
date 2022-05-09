@@ -1,96 +1,4 @@
 #-----------------------------------------------------------------------------80
-#
-#-----------------------------------------------------------------------------80
-#' Visualize one-dimensional data by violin plots.
-#'
-#' This function visualizes one-dimensional data by violin plots.
-#'
-#' @param dataframe1D A dataframe with one column.
-#' @param labels NULL or a vector of labels of all the samples,
-#'   corresponding to colors.
-#' @param colors NULL or a vector of colors of all the samples,
-#'   corresponding to labels.
-#'
-#' @return A ggplot object.
-#' @import ggplot2
-#' @export
-#'
-#' @examples
-#' data(pbmcs_eg)
-#' vname <- "MSigID:92-S"
-#' pbmc_sub <- pbmcs_eg$CM[rownames(pbmcs_eg$CM) %in% vname, ]
-#' labels <- SummarizedExperiment::colData(pbmc_sub)$seurat_clusters
-#' mat <- t(as.matrix(SummarizedExperiment::assay(pbmc_sub, "counts")))
-#' dataframe1D <- as.data.frame(mat)
-#' plot_violin(dataframe1D = dataframe1D, labels = labels, colors = NULL)
-#'
-plot_violin <- function(dataframe1D = NULL, labels = NULL, colors = NULL){
-  if(is.null(labels)){
-    dataframe1D$label <- ""
-    p <- ggplot() +
-      geom_violin(aes(x = as.factor(dataframe1D$label), y = dataframe1D[, 1]),
-                  fill = "gray80", trim = FALSE, size = 0.5) +
-      geom_boxplot(aes(x = as.factor(dataframe1D$label), y = dataframe1D[, 1]),
-                   width = 0.15, alpha = 0.6)
-  }else{
-    dataframe1D$label <- labels
-    dataframe1D <- dataframe1D[order(dataframe1D$label), ]
-    p <- ggplot() +
-      geom_violin(aes(x = as.factor(dataframe1D$label), y = dataframe1D[, 1],
-                      fill = as.factor(dataframe1D$label)),
-                  trim = FALSE, size = 0.5) +
-      geom_boxplot(aes(x = as.factor(dataframe1D$label), y = dataframe1D[, 1]),
-                   width = 0.15, alpha = 0.6)
-    if(!is.null(colors)){
-      dataframe1D$color <- colors
-      p <- p + scale_fill_manual(values = unique(dataframe1D$color))
-    }
-  }
-
-  return(p)
-}
-#-----------------------------------------------------------------------------80
-#
-#-----------------------------------------------------------------------------80
-#' Visualize a two-dimensional data with labels and colors.
-#'
-#' This function visualizes a two-dimensional data with labels and colors.
-#'
-#' @param dataframe2D A dataframe with two columns.
-#' @param labels NULL or a vector of labels of all the samples,
-#'   corresponding to colors.
-#' @param colors NULL or a vector of colors of all the samples,
-#'   corresponding to labels.
-#'
-#' @return A ggplot object.
-#' @import ggplot2
-#' @export
-#'
-#' @examples
-#' data(pbmcs_eg)
-#' labels <- SummarizedExperiment::colData(pbmcs_eg$CM)$seurat_clusters
-#' mat <- SingleCellExperiment::reducedDim(pbmcs_eg$CM, "TSNE")
-#' dataframe2D <- as.data.frame(mat)
-#' plot_dataframe2D(dataframe2D = dataframe2D, labels = labels, colors = NULL)
-#'
-plot_dataframe2D <- function(dataframe2D = NULL, labels = NULL, colors = NULL){
-  if(is.null(labels)){
-    p <- ggplot() + geom_point(aes(x = dataframe2D[, 1], y = dataframe2D[, 2]),
-                               color = "black")
-  }else{
-    dataframe2D$label <- labels
-    dataframe2D <- dataframe2D[order(dataframe2D$label), ]
-    p <- ggplot() + geom_point(aes(x = dataframe2D[, 1], y = dataframe2D[, 2],
-                                   color = dataframe2D$label))
-    if(!is.null(colors)){
-      dataframe2D$color <- colors
-      p <- p + scale_colour_manual(values=unique(dataframe2D$color))
-    }
-  }
-
-  return(p)
-}
-#-----------------------------------------------------------------------------80
 # 
 #-----------------------------------------------------------------------------80
 #' Visualize a three-dimensional data with labels and colors.
@@ -143,7 +51,7 @@ plot_dataframe3D <- function(
       dataframe3D <- dataframe3D[order(dataframe3D$label), ]
       scatter3D(dataframe3D[, 1], dataframe3D[, 2], dataframe3D[, 3],
                 main = title, xlab = xlabel, ylab = ylabel, zlab = zlabel,
-                box = TRUE, bty = "b2", axes = TRUE, nticks = 5,
+                box = TRUE, bty = "bl", axes = TRUE, nticks = 5,
                 theta = theta, phi = phi, pch = 16, cex = 0.5, alpha = 1.0,
                 col = dataframe3D$color, colvar = NA, colkey = FALSE)
       graphics::legend("bottomright", legend = unique(dataframe3D$label),
@@ -201,7 +109,7 @@ plot_dataframe3D <- function(
 #' se <- SingleCellExperiment::altExp(pbmcs_eg$CM, "logcounts")
 #' gem_list <- list(GeneExpr = SummarizedExperiment::assay(se, "counts"))
 #' labels <- list() ; ssmlabel_list <- list()
-#' for(i in seq_len(length(pbmcs_eg))){
+#' for(i in seq_along(pbmcs_eg)){
 #'   fa <- SummarizedExperiment::colData(pbmcs_eg[[i]])$seurat_clusters
 #'   labels[[i]] <- data.frame(label = fa)
 #'   colors <- rainbow(length(unique(labels[[i]]$label)))[labels[[i]]$label]
@@ -231,12 +139,12 @@ plot_multiheatmaps <- function(
   # Set names of dataframes.
   #--------------------------------------------------
   if(!is.null(ssmlabel_list)){
-    for(i in seq_len(length(ssmlabel_list))){
+    for(i in seq_along(ssmlabel_list)){
       colnames(ssmlabel_list[[i]]) <- c("label", "color")
     }
   }
   if(!is.null(gemlabel_list)){
-    for(i in seq_len(length(gemlabel_list))){
+    for(i in seq_along(gemlabel_list)){
       colnames(gemlabel_list[[i]]) <- c("label", "color")
     }
   }
@@ -245,12 +153,12 @@ plot_multiheatmaps <- function(
   #--------------------------------------------------
   if(show_row_names){
     nrow_max <- 1
-    for(i in seq_len(length(ssm_list))){
+    for(i in seq_along(ssm_list)){
       if(nrow_max < dim(ssm_list[[i]])[1]){
         nrow_max <- dim(ssm_list[[i]])[1]
       }
     }
-    for(i in seq_len(length(gem_list))){
+    for(i in seq_along(gem_list)){
       if(nrow_max < dim(gem_list[[i]])[1]){
         nrow_max <- dim(gem_list[[i]])[1]
       }
@@ -274,16 +182,16 @@ plot_multiheatmaps <- function(
   #--------------------------------------------------
   if(!is.null(nrand_samples)){
     inds <- sample(ncol(ssm_list[[1]]), size = nrand_samples, replace = FALSE)
-    for(i in seq_len(length(ssm_list))){
+    for(i in seq_along(ssm_list)){
       ssm_list[[i]] <- ssm_list[[i]][, inds]
     }
-    for(i in seq_len(length(ssmlabel_list))){
+    for(i in seq_along(ssmlabel_list)){
       ssmlabel_list[[i]] <- ssmlabel_list[[i]][inds, ]
     }
-    for(i in seq_len(length(gem_list))){
+    for(i in seq_along(gem_list)){
       gem_list[[i]] <- gem_list[[i]][, inds]
     }
-    for(i in seq_len(length(gemlabel_list))){
+    for(i in seq_along(gemlabel_list)){
       gemlabel_list[[i]] <- gemlabel_list[[i]][inds, ]
     }
   }
@@ -292,7 +200,7 @@ plot_multiheatmaps <- function(
   #--------------------------------------------------
   p <- c()
   ha <- list()
-  for(i in seq_len(length(ssm_list))){
+  for(i in seq_along(ssm_list)){
     if((!is.element(NA, ssmlabel_list[[i]]$label)) &
        (!is.null(ssmlabel_list[[i]]$label))){
       inds <- order(ssmlabel_list[[i]]$label)
@@ -386,7 +294,7 @@ plot_multiheatmaps <- function(
   # Compute heatmaps of gene-by-sample matrices.
   #--------------------------------------------------
   ha2 <- list()
-  for(i in seq_len(length(gem_list))){
+  for(i in seq_along(gem_list)){
     if((!is.element(NA, gemlabel_list[[i]]$label)) &
        (!is.null(gemlabel_list[[i]]$label))){
       inds <- order(gemlabel_list[[i]]$label)

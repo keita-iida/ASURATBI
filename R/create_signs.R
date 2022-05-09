@@ -209,7 +209,7 @@ cluster_genesets <- function(
     }else{
       count_strg <- length(genes_strg)
       gs <- c()
-      for(j in seq_len(length(genes_strg))){
+      for(j in seq_along(genes_strg)){
         inds <- which(rownames(tmp) == genes_strg[j])
         if(ncol(tmp) == 1){
           if(colnames(tmp) == "geneID"){
@@ -229,7 +229,7 @@ cluster_genesets <- function(
     }else{
       count_vari <- length(genes_vari)
       gs <- c()
-      for(j in seq_len(length(genes_vari))){
+      for(j in seq_along(genes_vari)){
         inds <- which(rownames(tmp) == genes_vari[j])
         if(ncol(tmp) == 1){
           if(colnames(tmp) == "geneID"){
@@ -249,7 +249,7 @@ cluster_genesets <- function(
     }else{
       count_weak <- length(genes_weak)
       gs <- c()
-      for(j in seq_len(length(genes_weak))){
+      for(j in seq_along(genes_weak)){
         inds <- which(rownames(tmp) == genes_weak[j])
         if(ncol(tmp) == 1){
           if(colnames(tmp) == "geneID"){
@@ -431,7 +431,7 @@ remove_signs_redundant <- function(
 
   report <- list()
   s_or_v <- c("sign_SCG", "sign_VCG")
-  for(k in seq_len(length(s_or_v))){
+  for(k in seq_along(s_or_v)){
     #--------------------------------------------------
     # Report format
     #--------------------------------------------------
@@ -596,7 +596,7 @@ remove_signs_redundant <- function(
   #--------------------------------------------------
   # Store the report.
   #--------------------------------------------------
-  for(k in seq_len(length(s_or_v))){
+  for(k in seq_along(s_or_v)){
     if(nrow(metadata(sce)[[s_or_v[k]]]) < 2){
       next
     }
@@ -643,7 +643,7 @@ remove_signs_manually <- function(sce = NULL, keywords = NULL){
     return(sce)
   }
   s_or_v <- c("sign_SCG", "sign_VCG")
-  for(k in seq_len(length(s_or_v))){
+  for(k in seq_along(s_or_v)){
     df <- metadata(sce)[[s_or_v[k]]]
     if(nrow(df) != 0){
       tmp <- ((grepl(keywords, df$SignID)) | (grepl(keywords, df$Description)))
@@ -712,7 +712,7 @@ select_signs_manually <- function(sce = NULL, keywords = NULL){
     return(sce)
   }
   s_or_v <- c("sign_SCG", "sign_VCG")
-  for(k in seq_len(length(s_or_v))){
+  for(k in seq_along(s_or_v)){
     df <- metadata(sce)[[s_or_v[k]]]
     if(nrow(df) != 0){
       tmp <- ((grepl(keywords, df$SignID)) | (grepl(keywords, df$Description)))
@@ -797,7 +797,7 @@ makeSignMatrix <- function(sce = NULL, weight_strg = 0.5, weight_vari = 0.5){
   rowdata <- matrix(ncol = 5, nrow = 0, dimnames = list(NULL, rowdata))
 
   s_or_v <- c("sign_SCG", "sign_VCG")
-  for(k in seq_len(length(s_or_v))){
+  for(k in seq_along(s_or_v)){
     df <- metadata(sce)[[s_or_v[k]]]
     if(nrow(df) != 0){
       for(i in seq_len(nrow(df))){
@@ -880,14 +880,14 @@ makeSignMatrix <- function(sce = NULL, weight_strg = 0.5, weight_vari = 0.5){
   }
   new_sce <- SingleCellExperiment(assays = list(counts = res),
                                   rowData = rowdata, colData = colData(sce))
-  for(k in seq_len(length(s_or_v))){
+  for(k in seq_along(s_or_v)){
     metadata(new_sce)[[s_or_v[k]]] <- metadata(sce)[[s_or_v[k]]]
   }
   if(!is.null(metadata(sce)[["sign_all"]])){
     metadata(new_sce)[["sign_all"]] <- metadata(sce)[["sign_all"]]
   }
   if(length(altExpNames(sce)) != 0){
-    for(i in seq_len(length(altExpNames(sce)))){
+    for(i in seq_along(altExpNames(sce))){
       altExp(new_sce, altExpNames(sce)[i]) <- altExp(sce, altExpNames(sce)[i])
     }
   }

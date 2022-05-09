@@ -1,0 +1,187 @@
+---
+title: "Spaniel 10X Visium"
+author: "Rachel Queen"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+    %\VignetteIndexEntry{Spaniel 10X Visium}
+    %\VignetteEngine{knitr::rmarkdown}
+    %\VignetteEncoding{UTF-8}
+---
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(warning=FALSE, message=FALSE, include = TRUE,
+                        fig.height = 8, fig.width = 8, fig.align = "center",
+                        echo=TRUE
+                        )
+
+```  
+
+## About Spaniel
+
+Spaniel is an R package designed to visualise results of Spatial Transcriptomics
+experiments. The current stable (or kennel!) version of Spaniel is available from Bioconductor:
+
+```{r install, eval = FALSE}
+
+BiocManager::install('Spaniel')
+
+
+```
+
+### Spaniel - with 10X import option
+
+This vignette refers uses data from a 10X Genomics Visium experiment. 
+
+```{r, load libraries}
+library(Spaniel)
+library(DropletUtils)
+library(scater)
+library(scran)
+
+```
+
+
+## Data
+
+This vignette will show how to load the results of 10X Visium spatial 
+transcriptomics experiment which has been run through the Space Ranger pipeline.
+The data is distributed as part of the Space Ranger software package which can 
+be downloaded here:
+
+https://support.10xgenomics.com/spatial-gene-expression/software/overview/welcome
+
+The output from from the "spaceranger testrun" is used as an example here. 
+
+
+### Import the expression data
+
+Spaniel can directly load the output from SpaceRanger output using the createVisiumSCE function. This imports the gene expression data, spatial barcodes, and image dimensions into the SingleCellExperiment object. 
+
+```{r counts}
+pathToTenXOuts <- file.path(system.file(package = "Spaniel"), "extdata/outs")
+
+sce <- createVisiumSCE(tenXDir=pathToTenXOuts, 
+                            resolution="Low")
+
+```
+
+### SCE Object
+
+The pixel coordinates are added to the colData of the SCE object shown below:
+
+
+```{r barcodes}
+colData(sce)[, c("Barcode", "pixel_x", "pixel_y")]
+```
+
+The image dimensions are added to the metadata of the SCE object:
+
+```{r image_dimensions}
+metadata(sce)$ImgDims
+```
+
+The image is stored as a rasterised grob.
+
+```{r grob}
+metadata(sce)$Grob
+```
+
+## Quality Control
+
+Assessing the number of genes and number of counts per spot is a useful quality 
+control step. Spaniel allows QC metrics to be viewed on top of the 
+histological image so that any quality issues can be pinpointed. 
+Spots within the tissue region which have a low number of genes or counts may 
+be due to experimental problems which should be addressed. Conversely, spots 
+which lie  outside of the tissue and have a high number of counts or large 
+number of genes may indicate that there is background contamination. 
+
+
+### Visualisation
+
+The plotting function allows the use of a binary filter to visualise which 
+spots pass filtering thresholds. We create a filter to show spots where 1 or more gene is detected. Spots where no genes are detected will be removed from the remainder of the analysis.
+
+__NOTE:__ The parameters are set for the subset of counts used in this dataset.  
+The filter thresholds will be experiment specific and should be adjusted as 
+necessary.
+
+```{r, qcplotting,  results = "hide" }
+
+filter <- sce$detected > 0
+spanielPlot(object = sce,
+        plotType = "NoGenes", 
+        showFilter = filter, 
+        techType = "Visium", 
+        ptSizeMax = 3)
+
+
+
+```
+
+
+Spots where no genes are detected can be removed from the remainder of the analysis.
+
+```{r}
+sce <- sce[, filter]
+```
+
+The filtered data can then be normalised using the "normalize" function from the "scater" package and the expression of selected genes can be viewed on the histological image.
+
+```{r, gene plot,  results = "hide" }
+
+
+sce <- logNormCounts(sce)
+
+gene <- "ENSMUSG00000024843"
+p2 <- spanielPlot(object = sce,
+        plotType = "Gene", 
+        gene = "ENSMUSG00000024843",
+        techType = "Visium", 
+        ptSizeMax = 3)
+
+p2
+
+```
+
+## Cluster Spots
+
+The spots can be clustered based on transcriptomic similarities. 
+There are mulitple single cell clustering methods available. 
+He we use a nearest-neighbor graph based approach available in the 
+scran Bioconductor library.
+
+
+```{r}
+library(scran)
+sce <- logNormCounts(sce)
+sce <- runPCA(sce)
+sce <- runUMAP(sce)
+g <- buildSNNGraph(sce, k = 70)
+
+clust <- igraph::cluster_walktrap(g)$membership
+sce$clust <- factor(clust)
+```
+
+These clusters can be visualised on a UMAP plot:
+
+```{r}
+
+p3 <- plotReducedDim(sce, "UMAP", colour_by="clust") 
+p3
+```
+
+Or overlaid onto the the tissue section using Spaniel
+
+```{r}
+p4 <- spanielPlot(object = sce,
+        plotType = "Cluster", 
+        clusterRes = "clust",
+        showFilter = NULL, 
+        techType = "Visium", 
+        ptSizeMax = 1, customTitle = "Section A")  
+
+p4
+```
+

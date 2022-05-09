@@ -12,7 +12,7 @@
 #' swap_pass(list(vec = c(1, 1, 0), cnt = 0))
 #'
 swap_pass <- function(listdata) {
-    .Call('_ASURATBI_swap_pass', PACKAGE = 'ASURATBI', listdata)
+    .Call('_ASURAT_swap_pass', PACKAGE = 'ASURAT', listdata)
 }
 
 #' Perform bubble sorting, counting the number of steps.
@@ -28,6 +28,6 @@ swap_pass <- function(listdata) {
 #' bubble_sort(list(vec = c(1, 1, 0), cnt = 0))
 #'
 bubble_sort <- function(listdata) {
-    .Call('_ASURATBI_bubble_sort', PACKAGE = 'ASURATBI', listdata)
+    .Call('_ASURAT_bubble_sort', PACKAGE = 'ASURAT', listdata)
 }
 

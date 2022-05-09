@@ -42,9 +42,6 @@ compute_sepI_clusters <- function(
   if(length(intersect(ident_1, ident_2)) != 0){
     stop("ident_1 and ident_2 must be disjoint.")
   }
-  if((!is.element(ident_1, labels)) || (!is.element(ident_2, labels))){
-    stop("labels must include both ident_1 and ident_2.")
-  }
   if(dim(sce)[2] != length(labels)){
     stop("dim(sce)[2] must be equal to length(labels).")
   }
@@ -66,7 +63,7 @@ compute_sepI_clusters <- function(
     index_list <- list()
     baseindex_list <- list()
     nonbaseindex_list <- list()
-    for(i in seq_len(length(idents))){
+    for(i in seq_along(idents)){
       index_list[[i]] <- which(labels == idents[i])
       if(length(index_list[[i]]) == 1){
         baseindex_list[[i]] <- index_list[[i]]
@@ -124,7 +121,7 @@ compute_sepI_clusters <- function(
   #--------------------------------------------------
   inds <- order(res$sepI, decreasing = TRUE)
   res <- res[inds, ]
-  res$Rank <- seq_len(length(inds))
+  res$Rank <- seq_along(inds)
   rownames(res) <- seq_len(nrow(res))
   #--------------------------------------------------
   # Output
@@ -182,7 +179,7 @@ compute_sepI_all <- function(sce = NULL, labels = NULL, nrand_samples = NULL){
   # Initializes the progress bar
   pb <- txtProgressBar(min = 0, max = length(idents), style = 3,
                        width = 50, char = "=")
-  for(i in seq_len(length(idents))){
+  for(i in seq_along(idents)){
     setTxtProgressBar(pb, i)
     ident_1 <- idents[i]
     ident_2 <- setdiff(idents, ident_1)
@@ -196,7 +193,7 @@ compute_sepI_all <- function(sce = NULL, labels = NULL, nrand_samples = NULL){
   }
   close(pb)
   res_all <- c()
-  for(i in seq_len(length(res))){
+  for(i in seq_along(res)){
     res_all <- rbind(res_all, res[[i]])
   }
   rownames(res_all) <- seq_len(nrow(res_all))
