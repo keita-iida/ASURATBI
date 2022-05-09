@@ -1,18 +1,11 @@
-# ASURAT
+# ASURATBI
 ## Brief introduction
-Under construction....
+ASURATBI is a repository including ASURAT pipelines for analyzing single-cell and spatial transcriptome datasets.
 
 ## Vignettes
 Well-documented vignette and tutorial is available from the following URL:
 
-* (under construction....)
-
-## Installation
-One can install ASURAT by the following code:
-
-```{r}
-devtools::install_github("keita-iida/ASURATBI", upgrade = "never")
-```
+* https://keita-iida.github.io/ASURATBI/index.html
 
 ## Preprint
 The latest version is available from the following bioRxiv page:
