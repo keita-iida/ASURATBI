@@ -303,8 +303,7 @@ Create a custom-built cell type-related databases by combining different
 databases for analyzing human single-cell transcriptome data.
 ```{r, eval = FALSE}
 d <- list(human_CO[["cell"]], human_MSigDB[["cell"]], human_CellMarker[["cell"]])
-res <- do.call("rbind", d)
-human_CB <- list(cell = res)
+human_CB <- list(cell = do.call("rbind", d))
 ```
 
 Add formatted databases to `metadata(sce)$sign`.
@@ -483,7 +482,7 @@ for(i in seq_along(pbmcs)){
 }
 ```
 
-Show the clustering results in t-SNE spaces.
+Show the clustering results in low-dimensional spaces.
 ```{r, eval = FALSE}
 titles <- c("PBMC 4k (cell type)", "PBMC 4k (function)", "PBMC 4k (pathway)")
 for(i in seq_along(titles)){
@@ -1388,94 +1387,6 @@ saveRDS(pbmc, file = "backup/04_024_pbmc4k_seurat_ssGSEA.rds")
 
 # Load data.
 pbmc <- readRDS("backup/04_024_pbmc4k_seurat_ssGSEA.rds")
-```
-
-
-
-<br>
-
-### Infer cell types using ASURAT by inputting MSigDB
-Load the normalized data (see [here](#normalization)) and correlation matrix.
-```{r, eval = FALSE}
-pbmc <- readRDS("backup/04_003_pbmc4k_normalized.rds")
-cormat <- readRDS("backup/04_003_pbmc4k_cormat.rds")
-```
-
-Load the MSigDB.
-```{r, eval = FALSE}
-urlpath <- "https://github.com/keita-iida/ASURATDB/blob/main/genes2bioterm/"
-load(url(paste0(urlpath, "20220308_human_MSigDB.rda?raw=TRUE"))) # MSigDB
-```
-
-Perform ASURAT protocols.
-```{r, eval = FALSE}
-# Create a sign-by-sample matrix.
-pbmcs <- list(CB = pbmc)
-metadata(pbmcs$CB) <- list(sign = human_MSigDB$cell)
-pbmcs$CB <- remove_signs(sce = pbmcs$CB, min_ngenes = 2, max_ngenes = 1000)
-set.seed(1)
-pbmcs$CB <- cluster_genesets(sce = pbmcs$CB, cormat = cormat,
-                             th_posi = 0.20, th_nega = -0.40)
-pbmcs$CB <- create_signs(sce = pbmcs$CB, min_cnt_strg = 4, min_cnt_vari = 4)
-pbmcs$CB <- makeSignMatrix(sce = pbmcs$CB, weight_strg = 0.5, weight_vari = 0.5)
-# Perform dimension reduction (t-SNE).
-set.seed(1)
-mat <- t(as.matrix(assay(pbmcs$CB, "counts")))
-res <- Rtsne::Rtsne(mat, dim = 2, pca = TRUE, initial_dims = 50)
-reducedDim(pbmcs$CB, "TSNE") <- res[["Y"]]
-# Perform dimension reduction (UMAP).
-set.seed(1)
-mat <- t(as.matrix(assay(pbmcs$CB, "counts")))
-res <- umap::umap(mat, n_components = 2)
-reducedDim(pbmcs$CB, "UMAP") <- res[["layout"]]
-# Perform a cell clustering.
-surt <- Seurat::as.Seurat(pbmcs$CB, counts = "counts", data = "counts")
-mat <- as.matrix(assay(pbmcs$CB, "counts"))
-surt[["SSM"]] <- Seurat::CreateAssayObject(counts = mat)
-Seurat::DefaultAssay(surt) <- "SSM"
-surt <- Seurat::ScaleData(surt, features = rownames(surt))
-surt <- Seurat::RunPCA(surt, features = rownames(surt))
-surt <- Seurat::FindNeighbors(surt, reduction = "pca", dims = seq_len(40))
-surt <- Seurat::FindClusters(surt, resolution = 0.15)
-temp <- Seurat::as.SingleCellExperiment(surt)
-colData(pbmcs$CB)$seurat_clusters <- colData(temp)$seurat_clusters
-# Show the clustering results in low-dimensional spaces.
-labels <- colData(pbmcs$CB)$seurat_clusters
-df <- as.data.frame(reducedDim(pbmcs$CB, "UMAP"))
-p <- ggplot2::ggplot() +
-  ggplot2::geom_point(ggplot2::aes(x = df[, 1], y = df[, 2], color = labels),
-                      size = 1, alpha = 1) +
-  ggplot2::labs(title = "PBMC 4k (ASURAT using MSigDB)",
-                x = "UMAP_1", y = "UMAP_2", color = "") +
-  ggplot2::theme_classic(base_size = 20) +
-  ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5, size = 18)) +
-  ggplot2::guides(colour = ggplot2::guide_legend(override.aes = list(size = 4)))
-filename <- "figures/figure_04_0299.png"
-ggplot2::ggsave(file = filename, plot = p, dpi = 50, width = 5.1, height = 4.3)
-# Compute separation indices for each cluster against the others.
-set.seed(1)
-labels <- colData(pbmcs$CB)$seurat_clusters
-pbmcs$CB <- compute_sepI_all(sce = pbmcs$CB, labels = labels, nrand_samples = NULL)
-# Compute differentially expressed genes.
-set.seed(1)
-surt <- Seurat::as.Seurat(pbmcs$CB, counts = "counts", data = "counts")
-mat <- as.matrix(assay(altExp(pbmcs$CB), "counts"))
-surt[["GEM"]] <- Seurat::CreateAssayObject(counts = mat)
-Seurat::DefaultAssay(surt) <- "GEM"
-surt <- Seurat::SetIdent(surt, value = "seurat_clusters")
-res <- Seurat::FindAllMarkers(surt, only.pos = TRUE,
-                              min.pct = 0.25, logfc.threshold = 0.25)
-metadata(pbmcs$CB)$marker_genes$all <- res
-```
-
-<img src="figures/figure_04_0299.png" width="200px">
-
-```{r, eval = FALSE}
-# Save data.
-saveRDS(pbmcs, file = "backup/04_025_pbmc4k_asurat_msigdb.rds")
-
-# Load data.
-pbmcs <- readRDS("backup/04_025_pbmc4k_asurat_msigdb.rds")
 ```
 
 

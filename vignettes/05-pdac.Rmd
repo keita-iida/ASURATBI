@@ -608,8 +608,7 @@ databases for analyzing human single-cell transcriptome data.
 ```{r, eval = FALSE}
 d <- list(human_DO[["disease"]], human_CO[["cell"]], human_MSigDB[["cell"]],
           human_CellMarker[["cell"]])
-res <- do.call("rbind", d)
-human_CB <- list(cell = res)
+human_CB <- list(cell = do.call("rbind", d))
 ```
 
 Add formatted databases to `metadata(sce)$sign`.

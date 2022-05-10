@@ -303,8 +303,7 @@ Create a custom-built cell type-related databases by combining different
 databases for analyzing human single-cell transcriptome data.
 ```{r, eval = FALSE}
 d <- list(human_CO[["cell"]], human_MSigDB[["cell"]], human_CellMarker[["cell"]])
-res <- do.call("rbind", d)
-human_CB <- list(cell = res)
+human_CB <- list(cell = do.call("rbind", d))
 ```
 
 Add formatted databases to `metadata(sce)$sign`.
@@ -483,7 +482,7 @@ for(i in seq_along(pbmcs)){
 }
 ```
 
-Show the clustering results in t-SNE spaces.
+Show the clustering results in low-dimensional spaces.
 ```{r, eval = FALSE}
 titles <- c("PBMC 6k (cell type)", "PBMC 6k (function)", "PBMC 6k (pathway)")
 for(i in seq_along(titles)){
@@ -1402,7 +1401,7 @@ surt <- Seurat::FindNeighbors(surt, reduction = "pca", dims = seq_len(40))
 surt <- Seurat::FindClusters(surt, resolution = 0.15)
 temp <- Seurat::as.SingleCellExperiment(surt)
 colData(pbmcs$CB)$seurat_clusters <- colData(temp)$seurat_clusters
-# Show the clustering results in t-SNE spaces.
+# Show the clustering results in low-dimensional spaces.
 labels <- colData(pbmcs$CB)$seurat_clusters
 df <- as.data.frame(reducedDim(pbmcs$CB, "UMAP"))
 p <- ggplot2::ggplot() +
