@@ -5,7 +5,7 @@ date: "`r Sys.Date()`"
 output:
   rmarkdown::github_document:
     toc: true
-    toc_depth: 2
+    toc_depth: 1
     number_section: true
 vignette: >
   %\VignetteIndexEntry{ASURATBI}
