@@ -3,7 +3,7 @@ title: "Applying ASURAT to single-cell and spatial transcriptome datasets"
 author: "Keita Iida"
 date: "`r Sys.Date()`"
 output:
-  rmarkdown::github_document
+  rmarkdown::html_vignette:
 vignette: >
   %\VignetteIndexEntry{ASURATBI}
   %\VignetteEngine{knitr::rmarkdown}

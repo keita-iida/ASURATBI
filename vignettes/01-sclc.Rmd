@@ -3,8 +3,7 @@ title: "Analysis of small cell lung cancer dataset"
 author: "Keita Iida"
 date: "`r Sys.Date()`"
 output:
-  rmarkdown::github_document:
-    md_extension: +gfm_auto_identifiers
+  rmarkdown::html_vignette:
     toc: true
     toc_depth: 2
     number_section: true

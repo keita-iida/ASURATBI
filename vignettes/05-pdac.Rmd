@@ -3,10 +3,9 @@ title: "Analysis of PDAC datasets (Moncada et al., 2020)"
 author: "Keita Iida"
 date: "`r Sys.Date()`"
 output:
-  rmarkdown::github_document:
-    md_extension: +gfm_auto_identifiers
+  rmarkdown::html_vignette:
     toc: true
-    toc_depth: 1
+    toc_depth: 2
     number_section: true
 vignette: >
   %\VignetteIndexEntry{ASURATBI}
