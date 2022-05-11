@@ -352,9 +352,9 @@ pbmcs$KG <- cluster_genesets(sce = pbmcs$KG, cormat = cormat,
 ASURAT function `create_signs()` creates signs by the following
 criteria:
 
-1.  the number of genes in SCG&gt;= `min_cnt_strg` (the default value
+1.  the number of genes in SCG\>= `min_cnt_strg` (the default value
     is 2) and
-2.  the number of genes in VCG&gt;= `min_cnt_vari` (the default value is
+2.  the number of genes in VCG\>= `min_cnt_vari` (the default value is
     2),
 
 which are independently applied to SCGs and VCGs, respectively.
@@ -401,7 +401,7 @@ information:
 -   `names(colData(new_sce))`: nReads, nGenes, percMT,
 -   `names(rowData(new_sce))`: ParentSignID, Description, CorrGene,
     etc.,
--   `names(metadata(new_sce))`: sign\_SCG, sign\_VCG, etc.,
+-   `names(metadata(new_sce))`: sign_SCG, sign_VCG, etc.,
 -   `altExpNames(new_sce)`: something if there is data in `altExp(sce)`.
 
 ``` r
@@ -947,7 +947,7 @@ View(metadata(pbmc)$stat[metadata(pbmc)$stat$FDR < 10^(-100), ])
 
 ### 7.1.5 Infer cell types
 
-Defining significant genes as genes with FDR&lt;1e-100, infer cell types
+Defining significant genes as genes with FDR\<1e-100, infer cell types
 using [GeneCards](https://www.genecards.org/).
 
     1: Unspecified  # Only LDHB, RPS14, and RPS3 were detected as DEGs.
@@ -1094,7 +1094,7 @@ View(pbmc@misc$stat[which(pbmc@misc$stat$p_val_adj < 10^(-100)), ])
 
 ### 7.2.4 Infer cell types
 
-Defining significant genes as genes with FDR&lt;1e-100, infer cell types
+Defining significant genes as genes with FDR\<1e-100, infer cell types
 using [GeneCards](https://www.genecards.org/).
 
     0: T cell        # CD3D (p_val_adj ~0), CD3E (p_val_adj ~e-276)
@@ -1503,7 +1503,7 @@ Load the normalized data (see [here](#normalization)).
 pbmc <- readRDS("backup/05_003_pbmc6k_normalized.rds")
 ```
 
-Create Monocle 3 objects (cell\_data\_set (CDS)).
+Create Monocle 3 objects (cell_data_set (CDS)).
 
 ``` r
 gene_metadata <- data.frame(gene_short_name = rowData(pbmc)$gene)
@@ -1593,9 +1593,8 @@ View(markers[which(markers$marker_test_q_value < 10^(-100)), ])
 
 ### 7.3.4 Infer cell types
 
-Defining significant genes as genes with
-marker\_teset\_q\_value&lt;1e-100, infer cell types using
-[GeneCards](https://www.genecards.org/).
+Defining significant genes as genes with marker_teset_q\_value\<1e-100,
+infer cell types using [GeneCards](https://www.genecards.org/).
 
     1: T cell          # CD3D (marker_teset_q_value ~e-154)
                        # CD3E (marker_teset_q_value ~e-120)
@@ -1724,8 +1723,8 @@ View(markers[which(markers$sc3_4_de_padj < 10^(-100)), ])
 
 ### 7.5.2 Infer cell types
 
-Defining significant genes as genes with sc3\_4\_de\_padj&lt;1e-100,
-infer cell types using [GeneCards](https://www.genecards.org/).
+Defining significant genes as genes with sc3_4\_de_padj\<1e-100, infer
+cell types using [GeneCards](https://www.genecards.org/).
 
     1: T cell          # CD3E (sc3_4_de_padj ~0)
                        # CD3D (sc3_4_de_padj ~0)

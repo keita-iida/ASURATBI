@@ -1938,7 +1938,7 @@ sce <- readRDS("backup/21_004_pbmc1500_asurat.rds")
 
 <img src="figures/figure_21_0130.png" width="200px">
 
-<br> \#\#\#\# Seurat Run Seurat protocols.
+<br> \#### Seurat Run Seurat protocols.
 
 ``` r
 # Create Seurat objects.
@@ -2794,7 +2794,7 @@ sce <- readRDS("backup/22_004_pbmc1500_asurat.rds")
 
 <img src="figures/figure_22_0130.png" width="200px">
 
-<br> \#\#\#\# Seurat Run Seurat protocols.
+<br> \#### Seurat Run Seurat protocols.
 
 ``` r
 # Create Seurat objects.

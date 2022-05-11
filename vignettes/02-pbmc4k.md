@@ -7,9 +7,33 @@ Keita Iida
 -   [2 Install libraries](#2-install-libraries)
 -   [3 Introduction](#3-introduction)
 -   [4 Prepare scRNA-seq data](#4-prepare-scrna-seq-data)
+    -   [4.1 PBMC 4k](#41-pbmc-4k)
 -   [5 Preprocessing](#5-preprocessing)
+    -   [5.1 Control data quality](#51-control-data-quality)
+    -   [5.2 Normalize data](#normalization)
 -   [6 Multifaceted sign analysis](#6-multifaceted-sign-analysis)
+    -   [6.1 Compute correlation
+        matrices](#61-compute-correlation-matrices)
+    -   [6.2 Load databases](#62-load-databases)
+    -   [6.3 Create signs](#63-create-signs)
+    -   [6.4 Select signs](#64-select-signs)
+    -   [6.5 Create sign-by-sample
+        matrices](#65-create-sign-by-sample-matrices)
+    -   [6.6 Reduce dimensions of sign-by-sample
+        matrices](#66-reduce-dimensions-of-sign-by-sample-matrices)
+    -   [6.7 Cluster cells](#67-cluster-cells)
+    -   [6.8 Investigate significant
+        signs](#68-investigate-significant-signs)
+    -   [6.9 Investigate significant
+        genes](#69-investigate-significant-genes)
+    -   [6.10 Multifaceted analysis](#610-multifaceted-analysis)
+    -   [6.11 Infer cell types](#611-infer-cell-types)
 -   [7 Using the existing softwares](#7-using-the-existing-softwares)
+    -   [7.1 scran](#71-scran)
+    -   [7.2 Seurat](#72-seurat)
+    -   [7.3 Monocle 3](#73-monocle-3)
+    -   [7.4 SC3](#74-sc3)
+    -   [7.5 Cluster cells](#75-cluster-cells)
 
 # 1 Computational environment
 
@@ -352,9 +376,9 @@ pbmcs$KG <- cluster_genesets(sce = pbmcs$KG, cormat = cormat,
 ASURAT function `create_signs()` creates signs by the following
 criteria:
 
-1.  the number of genes in SCG&gt;= `min_cnt_strg` (the default value
+1.  the number of genes in SCG\>= `min_cnt_strg` (the default value
     is 2) and
-2.  the number of genes in VCG&gt;= `min_cnt_vari` (the default value is
+2.  the number of genes in VCG\>= `min_cnt_vari` (the default value is
     2),
 
 which are independently applied to SCGs and VCGs, respectively.
@@ -401,7 +425,7 @@ information:
 -   `names(colData(new_sce))`: nReads, nGenes, percMT,
 -   `names(rowData(new_sce))`: ParentSignID, Description, CorrGene,
     etc.,
--   `names(metadata(new_sce))`: sign\_SCG, sign\_VCG, etc.,
+-   `names(metadata(new_sce))`: sign_SCG, sign_VCG, etc.,
 -   `altExpNames(new_sce)`: something if there is data in `altExp(sce)`.
 
 ``` r
@@ -947,7 +971,7 @@ View(metadata(pbmc)$stat[metadata(pbmc)$stat$FDR < 10^(-100), ])
 
 ### 7.1.5 Infer cell types
 
-Defining significant genes as genes with FDR&lt;1e-100, infer cell types
+Defining significant genes as genes with FDR\<1e-100, infer cell types
 using [GeneCards](https://www.genecards.org/).
 
     1: Monocyte     # S100A9 (FDR ~0), MNDA (FDR ~0)
@@ -1096,7 +1120,7 @@ View(pbmc@misc$stat[which(pbmc@misc$stat$p_val_adj < 10^(-100)), ])
 
 ### 7.2.4 Infer cell types
 
-Defining significant genes as genes with FDR&lt;1e-100, infer cell types
+Defining significant genes as genes with FDR\<1e-100, infer cell types
 using [GeneCards](https://www.genecards.org/).
 
     0: T cell          # TRAC (p_val_adj ~0), CD3E (p_val_adj ~e-273)
@@ -1450,7 +1474,7 @@ Load the normalized data (see [here](#normalization)).
 pbmc <- readRDS("backup/04_003_pbmc4k_normalized.rds")
 ```
 
-Create Monocle 3 objects (cell\_data\_set (CDS)).
+Create Monocle 3 objects (cell_data_set (CDS)).
 
 ``` r
 gene_metadata <- data.frame(gene_short_name = rowData(pbmc)$gene)
@@ -1540,9 +1564,8 @@ View(markers[which(markers$marker_test_q_value < 10^(-100)), ])
 
 ### 7.3.4 Infer cell types
 
-Defining significant genes as genes with
-marker\_teset\_q\_value&lt;1e-100, infer cell types using
-[GeneCards](https://www.genecards.org/).
+Defining significant genes as genes with marker_teset_q\_value\<1e-100,
+infer cell types using [GeneCards](https://www.genecards.org/).
 
     1: T cell          # TRAC (marker_teset_q_value ~e-268)
                        # CD3D (marker_teset_q_value ~e-210)
@@ -1677,8 +1700,8 @@ View(markers[which(markers$sc3_8_de_padj < 10^(-100)), ])
 
 ### 7.5.2 Infer cell types
 
-Defining significant genes as genes with sc3\_8\_de\_padj&lt;1e-100,
-infer cell types using [GeneCards](https://www.genecards.org/).
+Defining significant genes as genes with sc3_8\_de_padj\<1e-100, infer
+cell types using [GeneCards](https://www.genecards.org/).
 
     1: Monocyte        # S100A9 (sc3_8_de_padj ~0)
                        # S100A8 (sc3_8_de_padj ~0)

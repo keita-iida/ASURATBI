@@ -6,8 +6,8 @@ Keita Iida
 -   [1 Computational environment](#1-computational-environment)
 -   [2 Install libraries](#2-install-libraries)
 -   [3 Introduction](#3-introduction)
--   [4 Prepare scRNA-seq and ST data (Moncada et
-    al., 2020)](#4-prepare-scrna-seq-and-st-data-moncada-et-al-2020)
+-   [4 Prepare scRNA-seq and ST data (Moncada et al.,
+    2020)](#4-prepare-scrna-seq-and-st-data-moncada-et-al-2020)
 -   [5 Preprocessing](#5-preprocessing)
 -   [6 Multifaceted sign analysis](#6-multifaceted-sign-analysis)
 -   [7 Using the existing softwares](#7-using-the-existing-softwares)
@@ -599,9 +599,9 @@ pdacs$KG <- cluster_genesets(sce = pdacs$KG, cormat = cormat,
 ASURAT function `create_signs()` creates signs by the following
 criteria:
 
-1.  the number of genes in SCG&gt;= `min_cnt_strg` (the default value
+1.  the number of genes in SCG\>= `min_cnt_strg` (the default value
     is 2) and
-2.  the number of genes in VCG&gt;= `min_cnt_vari` (the default value is
+2.  the number of genes in VCG\>= `min_cnt_vari` (the default value is
     2),
 
 which are independently applied to SCGs and VCGs, respectively.
@@ -648,7 +648,7 @@ information:
 -   `names(colData(new_sce))`: nReads, nGenes, percMT,
 -   `names(rowData(new_sce))`: ParentSignID, Description, CorrGene,
     etc.,
--   `names(metadata(new_sce))`: sign\_SCG, sign\_VCG, etc.,
+-   `names(metadata(new_sce))`: sign_SCG, sign_VCG, etc.,
 -   `altExpNames(new_sce)`: something if there is data in `altExp(sce)`.
 
 ``` r
@@ -1613,7 +1613,7 @@ View(surt@misc$stat[which(surt@misc$stat$p_val_adj < 10^(-100)), ])
 
 ### 7.1.4 Infer cell states
 
-Defining significant genes as genes with FDR&lt;1e-99, infer cell states
+Defining significant genes as genes with FDR\<1e-99, infer cell states
 using [GeneCards](https://www.genecards.org/).
 
     0: Unspecified      # Only six genes are detected.
