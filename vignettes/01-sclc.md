@@ -1,7 +1,7 @@
 Analysis of small cell lung cancer dataset
 ================
 Keita Iida
-2022-05-11
+2022-05-29
 
 -   [1 Computational environment](#1-computational-environment)
 -   [2 Install libraries](#2-install-libraries)
@@ -239,8 +239,9 @@ visualization of `rowData(sce)`.
 
 ``` r
 title <- "SCLC"
+aveexp <- apply(as.matrix(assay(sclc, "counts")), 1, mean)
 df <- data.frame(x = seq_len(nrow(rowData(sclc))),
-                 y = sort(rowData(sclc)$nSamples, decreasing = TRUE))
+                 y = sort(aveexp, decreasing = TRUE))
 p <- ggplot2::ggplot() + ggplot2::scale_y_log10() +
   ggplot2::geom_point(ggplot2::aes(x = df$x, y = df$y), size = 1, alpha = 1) +
   ggplot2::labs(title = title, x = "Rank of genes", y = "Mean read counts") +

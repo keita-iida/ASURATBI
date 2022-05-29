@@ -1,7 +1,7 @@
 Analysis of 10x PBMC 4k dataset
 ================
 Keita Iida
-2022-05-11
+2022-05-29
 
 -   [1 Computational environment](#1-computational-environment)
 -   [2 Install libraries](#2-install-libraries)
@@ -187,8 +187,9 @@ visualization of `rowData(sce)`.
 
 ``` r
 title <- "PBMC 4k"
+aveexp <- apply(as.matrix(assay(pbmc, "counts")), 1, mean)
 df <- data.frame(x = seq_len(nrow(rowData(pbmc))),
-                 y = sort(rowData(pbmc)$nSamples, decreasing = TRUE))
+                 y = sort(aveexp, decreasing = TRUE))
 p <- ggplot2::ggplot() + ggplot2::scale_y_log10() +
   ggplot2::geom_point(ggplot2::aes(x = df$x, y = df$y), size = 1, alpha = 1) +
   ggplot2::labs(title = title, x = "Rank of genes", y = "Mean read counts") +

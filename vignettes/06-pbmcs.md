@@ -1,17 +1,36 @@
 Several computations for PBMC datasets
 ================
 Keita Iida
-2022-05-11
+2022-05-29
 
 -   [1 Computational environment](#1-computational-environment)
 -   [2 Install libraries](#2-install-libraries)
 -   [3 Introduction](#3-introduction)
 -   [4 Compare population ratios among existing
     methods](#4-compare-population-ratios-among-existing-methods)
+    -   [4.1 PBMC 4k](#41-pbmc-4k)
+    -   [4.2 PBMC 6k](#42-pbmc-6k)
+    -   [4.3 Reyes et al., 2020](#43-reyes-et-al-2020)
 -   [5 Exhausting parameter search](#5-exhausting-parameter-search)
+    -   [5.1 PBMC 4k](#51-pbmc-4k)
 -   [6 Investigate the dependency of ASURAT on the number of
     cells](#6-investigate-the-dependency-of-asurat-on-the-number-of-cells)
+    -   [6.1 PBMC 4k (try 1)](#61-pbmc-4k-try-1)
+    -   [6.2 PBMC 4k (try 2)](#62-pbmc-4k-try-2)
+    -   [6.3 PBMC 4k (try 3)](#63-pbmc-4k-try-3)
+    -   [6.4 Investigate population ratios across different number of
+        cells](#64-investigate-population-ratios-across-different-number-of-cells)
 -   [7 Answers to referee’s comments](#7-answers-to-referees-comments)
+    -   [7.1 Infer cell types using ASURAT by inputting
+        MSigDB](#71-infer-cell-types-using-asurat-by-inputting-msigdb)
+    -   [7.2 Infer cell types using ASURAT by inputting CO and
+        CellMarker](#72-infer-cell-types-using-asurat-by-inputting-co-and-cellmarker)
+    -   [7.3 Infer cell states using ASURAT by inputting GO and
+        KEGG](#73-infer-cell-states-using-asurat-by-inputting-go-and-kegg)
+    -   [7.4 Perform cell clustering using the combined
+        SSM](#74-perform-cell-clustering-using-the-combined-ssm)
+    -   [7.5 Perform cell clustering using the SSMs
+        separately](#75-perform-cell-clustering-using-the-ssms-separately)
 
 # 1 Computational environment
 

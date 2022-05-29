@@ -1,16 +1,40 @@
 Analysis of PDAC datasets (Moncada et al., 2020)
 ================
 Keita Iida
-2022-05-11
+2022-05-29
 
 -   [1 Computational environment](#1-computational-environment)
 -   [2 Install libraries](#2-install-libraries)
 -   [3 Introduction](#3-introduction)
 -   [4 Prepare scRNA-seq and ST data (Moncada et al.,
     2020)](#4-prepare-scrna-seq-and-st-data-moncada-et-al-2020)
+    -   [4.1 scRNA-seq data](#41-scrna-seq-data)
+    -   [4.2 ST data](#42-st-data)
 -   [5 Preprocessing](#5-preprocessing)
+    -   [5.1 Control data quality](#51-control-data-quality)
+    -   [5.2 Normalize data](#normalization)
 -   [6 Multifaceted sign analysis](#6-multifaceted-sign-analysis)
+    -   [6.1 Compute correlation
+        matrices](#61-compute-correlation-matrices)
+    -   [6.2 Load databases](#62-load-databases)
+    -   [6.3 Create signs](#63-create-signs)
+    -   [6.4 Select signs](#64-select-signs)
+    -   [6.5 Create sign-by-sample
+        matrices](#65-create-sign-by-sample-matrices)
+    -   [6.6 Reduce dimensions of sign-by-sample
+        matrices](#66-reduce-dimensions-of-sign-by-sample-matrices)
+    -   [6.7 Cluster cells](#67-cluster-cells)
+    -   [6.8 Investigate significant
+        signs](#68-investigate-significant-signs)
+    -   [6.9 Investigate significant
+        genes](#69-investigate-significant-genes)
+    -   [6.10 Multifaceted analysis](#610-multifaceted-analysis)
+    -   [6.11 Infer functional state of
+        cells](#611-infer-functional-state-of-cells)
+    -   [6.12 Spatial mapping by
+        Spaniel](#612-spatial-mapping-by-spaniel)
 -   [7 Using the existing softwares](#7-using-the-existing-softwares)
+    -   [7.1 Seurat](#71-seurat)
 
 # 1 Computational environment
 
@@ -336,9 +360,10 @@ visualization of `rowData(sce)`. ASURAT function `plot_dataframe2D()`
 shows scatter plots of two-dimensional data.
 
 ``` r
-df <- data.frame(x = seq_len(nrow(rowData(pdacrna))),
-                 y = sort(rowData(pdacrna)$nSamples, decreasing = TRUE))
 title <- "PDAC-A inDrop"
+aveexp <- apply(as.matrix(assay(pdacrna, "counts")), 1, mean)
+df <- data.frame(x = seq_len(nrow(rowData(pdacrna))),
+                 y = sort(aveexp, decreasing = TRUE))
 p <- ggplot2::ggplot() + ggplot2::scale_y_log10() +
   ggplot2::geom_point(ggplot2::aes(x = df$x, y = df$y), size = 1, alpha = 1) +
   ggplot2::labs(title = title, x = "Rank of genes", y = "Mean read counts") +
@@ -349,9 +374,10 @@ ggplot2::ggsave(file = filename, plot = p, dpi = 50, width = 5, height = 5)
 ```
 
 ``` r
-df <- data.frame(x = seq_len(nrow(rowData(pdacst))),
-                 y = sort(rowData(pdacst)$nSamples, decreasing = TRUE))
 title <- "PDAC-A ST"
+aveexp <- apply(as.matrix(assay(pdacst, "counts")), 1, mean)
+df <- data.frame(x = seq_len(nrow(rowData(pdacst))),
+                 y = sort(aveexp, decreasing = TRUE))
 p <- ggplot2::ggplot() + ggplot2::scale_y_log10() +
   ggplot2::geom_point(ggplot2::aes(x = df$x, y = df$y), size = 1, alpha = 1) +
   ggplot2::labs(title = title, x = "Rank of genes", y = "Mean read counts") +

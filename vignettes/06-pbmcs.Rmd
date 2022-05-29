@@ -3,6 +3,7 @@ title: "Several computations for PBMC datasets"
 author: "Keita Iida"
 date: "`r Sys.Date()`"
 output:
+#  rmarkdown::github_document:
   rmarkdown::html_vignette:
     toc: true
     toc_depth: 2

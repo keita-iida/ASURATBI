@@ -3,6 +3,7 @@ title: "Analysis of PDAC datasets (Moncada et al., 2020)"
 author: "Keita Iida"
 date: "`r Sys.Date()`"
 output:
+#  rmarkdown::github_document:
   rmarkdown::html_vignette:
     toc: true
     toc_depth: 2
@@ -373,9 +374,10 @@ Qualities of variable (gene) data are confirmed based on proper visualization of
 `rowData(sce)`.
 ASURAT function `plot_dataframe2D()` shows scatter plots of two-dimensional data.
 ```{r, eval = FALSE}
-df <- data.frame(x = seq_len(nrow(rowData(pdacrna))),
-                 y = sort(rowData(pdacrna)$nSamples, decreasing = TRUE))
 title <- "PDAC-A inDrop"
+aveexp <- apply(as.matrix(assay(pdacrna, "counts")), 1, mean)
+df <- data.frame(x = seq_len(nrow(rowData(pdacrna))),
+                 y = sort(aveexp, decreasing = TRUE))
 p <- ggplot2::ggplot() + ggplot2::scale_y_log10() +
   ggplot2::geom_point(ggplot2::aes(x = df$x, y = df$y), size = 1, alpha = 1) +
   ggplot2::labs(title = title, x = "Rank of genes", y = "Mean read counts") +
@@ -386,9 +388,10 @@ ggplot2::ggsave(file = filename, plot = p, dpi = 50, width = 5, height = 5)
 ```
 
 ```{r, eval = FALSE}
-df <- data.frame(x = seq_len(nrow(rowData(pdacst))),
-                 y = sort(rowData(pdacst)$nSamples, decreasing = TRUE))
 title <- "PDAC-A ST"
+aveexp <- apply(as.matrix(assay(pdacst, "counts")), 1, mean)
+df <- data.frame(x = seq_len(nrow(rowData(pdacst))),
+                 y = sort(aveexp, decreasing = TRUE))
 p <- ggplot2::ggplot() + ggplot2::scale_y_log10() +
   ggplot2::geom_point(ggplot2::aes(x = df$x, y = df$y), size = 1, alpha = 1) +
   ggplot2::labs(title = title, x = "Rank of genes", y = "Mean read counts") +

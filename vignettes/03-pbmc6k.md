@@ -1,15 +1,39 @@
 Analysis of 10x PBMC 6k dataset
 ================
 Keita Iida
-2022-05-11
+2022-05-29
 
 -   [1 Computational environment](#1-computational-environment)
 -   [2 Install libraries](#2-install-libraries)
 -   [3 Introduction](#3-introduction)
 -   [4 Prepare scRNA-seq data](#4-prepare-scrna-seq-data)
+    -   [4.1 PBMC 6k](#41-pbmc-6k)
 -   [5 Preprocessing](#5-preprocessing)
+    -   [5.1 Control data quality](#51-control-data-quality)
+    -   [5.2 Normalize data](#normalization)
 -   [6 Multifaceted sign analysis](#6-multifaceted-sign-analysis)
+    -   [6.1 Compute correlation
+        matrices](#61-compute-correlation-matrices)
+    -   [6.2 Load databases](#62-load-databases)
+    -   [6.3 Create signs](#63-create-signs)
+    -   [6.4 Select signs](#64-select-signs)
+    -   [6.5 Create sign-by-sample
+        matrices](#65-create-sign-by-sample-matrices)
+    -   [6.6 Reduce dimensions of sign-by-sample
+        matrices](#66-reduce-dimensions-of-sign-by-sample-matrices)
+    -   [6.7 Cluster cells](#67-cluster-cells)
+    -   [6.8 Investigate significant
+        signs](#68-investigate-significant-signs)
+    -   [6.9 Investigate significant
+        genes](#69-investigate-significant-genes)
+    -   [6.10 Multifaceted analysis](#610-multifaceted-analysis)
+    -   [6.11 Infer cell types](#611-infer-cell-types)
 -   [7 Using the existing softwares](#7-using-the-existing-softwares)
+    -   [7.1 scran](#71-scran)
+    -   [7.2 Seurat](#72-seurat)
+    -   [7.3 Monocle 3](#73-monocle-3)
+    -   [7.4 SC3](#74-sc3)
+    -   [7.5 Cluster cells](#75-cluster-cells)
 
 # 1 Computational environment
 
@@ -163,8 +187,9 @@ visualization of `rowData(sce)`.
 
 ``` r
 title <- "PBMC 6k"
+aveexp <- apply(as.matrix(assay(pbmc, "counts")), 1, mean)
 df <- data.frame(x = seq_len(nrow(rowData(pbmc))),
-                 y = sort(rowData(pbmc)$nSamples, decreasing = TRUE))
+                 y = sort(aveexp, decreasing = TRUE))
 p <- ggplot2::ggplot() + ggplot2::scale_y_log10() +
   ggplot2::geom_point(ggplot2::aes(x = df$x, y = df$y), size = 1, alpha = 1) +
   ggplot2::labs(title = title, x = "Rank of genes", y = "Mean read counts") +
