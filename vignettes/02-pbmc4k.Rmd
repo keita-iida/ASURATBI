@@ -1240,7 +1240,8 @@ Perform `getGeneSets()` with an argument `library = "C8"`
 ("cell type signature gene sets" in
 [MSigDB](https://www.gsea-msigdb.org/gsea/msigdb/collections.jsp)).
 ```{r, eval = FALSE}
-pbmc@misc[["getGeneSets"]] <- escape::getGeneSets(library = "C8")
+pbmc@misc[["getGeneSets"]] <- escape::getGeneSets(species = "Homo sapiens",
+                                                  library = "C8")
 ```
 
 Perform `enrichIt()`, estimating ssGSEA scores, in which the arguments are

@@ -12,7 +12,7 @@
 
 <meta name="author" content="Keita Iida" />
 
-<meta name="date" content="2022-05-29" />
+<meta name="date" content="2022-06-22" />
 
 <title>Analysis of 10x PBMC 6k dataset</title>
 
@@ -334,7 +334,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">Analysis of 10x PBMC 6k dataset</h1>
 <h4 class="author">Keita Iida</h4>
-<h4 class="date">2022-05-29</h4>
+<h4 class="date">2022-06-22</h4>
 
 
 <div id="TOC">
@@ -1334,7 +1334,8 @@ using ssGSEA</h3>
 <pre><code>[1] ‘1.0.1’</code></pre>
 <p>Perform <code>getGeneSets()</code> with an argument
 <code>library = &quot;C8&quot;</code> (“cell type signature gene sets” in <a href="https://www.gsea-msigdb.org/gsea/msigdb/collections.jsp">MSigDB</a>).</p>
-<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a>pbmc<span class="sc">@</span>misc[[<span class="st">&quot;getGeneSets&quot;</span>]] <span class="ot">&lt;-</span> escape<span class="sc">::</span><span class="fu">getGeneSets</span>(<span class="at">library =</span> <span class="st">&quot;C8&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a>pbmc<span class="sc">@</span>misc[[<span class="st">&quot;getGeneSets&quot;</span>]] <span class="ot">&lt;-</span> escape<span class="sc">::</span><span class="fu">getGeneSets</span>(<span class="at">species =</span> <span class="st">&quot;Homo sapiens&quot;</span>,</span>
+<span id="cb84-2"><a href="#cb84-2" aria-hidden="true" tabindex="-1"></a>                                                  <span class="at">library =</span> <span class="st">&quot;C8&quot;</span>)</span></code></pre></div>
 <p>Perform <code>enrichIt()</code>, estimating ssGSEA scores, in which
 the arguments are the same with those in the vignettes in escape
 package.</p>

@@ -1,7 +1,7 @@
 Package: ASURATBI
 Type: Package
 Title: A pipeline especially built for computing several single-cell datasets
-Version: 0.0.1
+Version: 0.0.2
 Authors@R: c(person("Keita", "Iida", email = "kiida@protein.osaka-u.ac.jp",
              role = c("aut", "cre"),
              comment = c(ORCID = "0000-0002-1076-830X")))

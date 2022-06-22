@@ -1,7 +1,7 @@
 Analysis of 10x PBMC 4k dataset
 ================
 Keita Iida
-2022-05-29
+2022-06-22
 
 -   [1 Computational environment](#1-computational-environment)
 -   [2 Install libraries](#2-install-libraries)
@@ -1308,7 +1308,8 @@ signature gene sets” in
 [MSigDB](https://www.gsea-msigdb.org/gsea/msigdb/collections.jsp)).
 
 ``` r
-pbmc@misc[["getGeneSets"]] <- escape::getGeneSets(library = "C8")
+pbmc@misc[["getGeneSets"]] <- escape::getGeneSets(species = "Homo sapiens",
+                                                  library = "C8")
 ```
 
 Perform `enrichIt()`, estimating ssGSEA scores, in which the arguments
