@@ -432,7 +432,8 @@ suppressMessages(library(ComplexHeatmap))
 filename <- "figures/figure_90_0010.png"
 png(file = filename, height = 200, width = 600, res = 100)
 p <- ComplexHeatmap::Heatmap(submat_asurat, column_title = "ASURAT",
-                             name = "Sign scores", cluster_columns = colhc_asurat,
+                             name = "Scaled\nSign scores",
+                             cluster_columns = colhc_asurat,
                              cluster_rows = FALSE, show_row_names = TRUE,
                              row_names_side = "right", show_row_dend = FALSE,
                              show_column_names = FALSE, column_dend_side = "top",
@@ -443,7 +444,8 @@ dev.off()
 filename <- "figures/figure_90_0011.png"
 png(file = filename, height = 200, width = 600, res = 100)
 p <- ComplexHeatmap::Heatmap(submat_ssgsea, column_title = "ssGSEA",
-                             name = "ssGSEA score", cluster_columns = colhc_ssgsea,
+                             name = "Scaled\nssGSEA score",
+                             cluster_columns = colhc_ssgsea,
                              cluster_rows = FALSE, show_row_names = TRUE,
                              row_names_side = "right", show_row_dend = FALSE,
                              show_column_names = FALSE, column_dend_side = "top",
@@ -454,7 +456,8 @@ dev.off()
 filename <- "figures/figure_90_0012.png"
 png(file = filename, height = 200, width = 600, res = 100)
 p <- ComplexHeatmap::Heatmap(submat_pagoda, column_title = "PAGODA2",
-                             name = "PC1 score", cluster_columns = colhc_pagoda,
+                             name = "Scaled\nmodified\nPC1 score",
+                             cluster_columns = colhc_pagoda,
                              cluster_rows = FALSE, show_row_names = TRUE,
                              row_names_side = "right", show_row_dend = FALSE,
                              show_column_names = FALSE, column_dend_side = "top",
