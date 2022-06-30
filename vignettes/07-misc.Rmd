@@ -256,7 +256,7 @@ sclc <- readRDS("backup/90_002_sclc_ssGSEA.rds")
 
 <br>
 
-## PAGODA
+## PAGODA2
 ```{r, eval = FALSE}
 packageVersion("pagoda2")
 ```

@@ -9,7 +9,7 @@ Keita Iida
     correlations](#3-investigate-gene-expression-correlations)
     -   [3.1 ASURAT](#31-asurat)
     -   [3.2 ssGSEA](#32-ssgsea)
-    -   [3.3 PAGODA](#33-pagoda)
+    -   [3.3 PAGODA2](#33-pagoda2)
     -   [3.4 Compare the results](#34-compare-the-results)
 
 # 1 Computational environment
@@ -234,7 +234,7 @@ sclc@misc[["enrichIt"]] <- ES
 
 <br>
 
-## 3.3 PAGODA
+## 3.3 PAGODA2
 
 ``` r
 packageVersion("pagoda2")
