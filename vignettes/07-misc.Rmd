@@ -135,8 +135,8 @@ node_sizes <- 9
 
 title <- "GO:0070371 (ERK1 and ERK2 cascade)"
 filename <- "figures/figure_90_0001"
-qgraph::qgraph(input = cmat, title = title, title.cex = 0.6, filename = filename,
-               filetype = "png", height = 2, width = 2,
+qgraph::qgraph(input = cmat, title = title, title.cex = 0.3, filename = filename,
+               filetype = "png", height = 1, width = 1,
                color = colors, vsize = node_sizes, label.color = text_colors,
                border.width = 3, edge.labels = FALSE,
                posCol = "red", negCol = "blue", threshold = 0)
@@ -395,9 +395,6 @@ rownames(mat_pagoda) <- c(sclc_pagoda[["misc"]][["pathwayOD"]][["cnam"]][["aspec
                           sclc_pagoda[["misc"]][["pathwayOD"]][["cnam"]][["aspect2"]],
                           sclc_pagoda[["misc"]][["pathwayOD"]][["cnam"]][["aspect3"]])
 
-# Change the orders of rows.
-
-
 # Select rows.
 submat_asurat <- as.matrix(mat_asurat[c(2, 5), ])
 submat_ssgsea <- as.matrix(mat_ssgsea[1, ])
@@ -428,9 +425,8 @@ colhc_pagoda <- hclust(dist(t(submat_pagoda)), method = "ward.D2")
 
 Examine the scores of samples (cells).
 ```{r, eval = FALSE}
-suppressMessages(library(ComplexHeatmap))
 filename <- "figures/figure_90_0010.png"
-png(file = filename, height = 200, width = 600, res = 100)
+png(file = filename, height = 120, width = 400, res = 80)
 p <- ComplexHeatmap::Heatmap(submat_asurat, column_title = "ASURAT",
                              name = "Scaled\nSign scores",
                              cluster_columns = colhc_asurat,
@@ -442,7 +438,7 @@ p
 dev.off()
 
 filename <- "figures/figure_90_0011.png"
-png(file = filename, height = 200, width = 600, res = 100)
+png(file = filename, height = 120, width = 392, res = 80)
 p <- ComplexHeatmap::Heatmap(submat_ssgsea, column_title = "ssGSEA",
                              name = "Scaled\nssGSEA score",
                              cluster_columns = colhc_ssgsea,
@@ -454,9 +450,9 @@ p
 dev.off()
 
 filename <- "figures/figure_90_0012.png"
-png(file = filename, height = 200, width = 600, res = 100)
+png(file = filename, height = 120, width = 442, res = 80)
 p <- ComplexHeatmap::Heatmap(submat_pagoda, column_title = "PAGODA2",
-                             name = "Scaled\nmodified\nPC1 score",
+                             name = "Scaled\nPC1 score",
                              cluster_columns = colhc_pagoda,
                              cluster_rows = FALSE, show_row_names = TRUE,
                              row_names_side = "right", show_row_dend = FALSE,
