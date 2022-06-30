@@ -1,7 +1,7 @@
 Analysis of small cell lung cancer dataset
 ================
 Keita Iida
-2022-06-22
+2022-06-30
 
 -   [1 Computational environment](#1-computational-environment)
 -   [2 Install libraries](#2-install-libraries)
@@ -164,6 +164,7 @@ p <- ComplexHeatmap::Heatmap(mat, column_title = "SCLC",
                              row_names_side = "right", show_row_dend = FALSE,
                              show_column_names = FALSE, column_dend_side = "top",
                              show_parent_dend_line = FALSE)
+p
 dev.off()
 
 # mtx <- t(colData(subsce)$nReads) ; rownames(mtx) <- "nReads"

@@ -1,7 +1,7 @@
 Analysis of PDAC datasets (Moncada et al., 2020)
 ================
 Keita Iida
-2022-06-22
+2022-06-30
 
 -   [1 Computational environment](#1-computational-environment)
 -   [2 Install libraries](#2-install-libraries)
@@ -1456,9 +1456,12 @@ Below are suggestive results.
 
 ## 7.1 Seurat
 
-Load the [data after quality control](#data_qc) and ST spot information.
+Load the result of the section [“Remove variables based on the mean read
+counts”](#data_qc) and ST spot information.
 
 ``` r
+pdacrna <- readRDS("<file path>")
+pdacst <- readRDS("<file path>")
 fn <- "rawdata/2020_001_Moncada/pdac_st/tissue_positions_list_spatial_object.tsv"
 ```
 
@@ -1521,14 +1524,14 @@ surt$previous_labels <- df$previous_labels
 surt_st <- surt[, grepl("ST", surt$batch)]
 mycolor <- c("Duct" = "deepskyblue1", "Cancer" = "grey20",
              "Stroma" = "limegreen", "Pancreas" = "orange")
-p <- Spaniel::spanielPlot(object = surt_st, grob = surt_st@images[[1]],
+p <- spanielPlot(object = surt_st, grob = surt_st@images[[1]],
                           plotType = "Cluster", clusterRes = "previous_labels",
                           ptSize = 2.5, customTitle = "PDAC-A (Previous labels)") +
   ggplot2::guides(colour = ggplot2::guide_legend(override.aes = list(size = 4))) +
   ggplot2::scale_color_manual(name = "Cluster", values = mycolor) +
   ggplot2::theme_void() +
   ggplot2::theme(text = ggplot2::element_text(size = 18, family = "Helvetica"))
-filename <- "figures/figure_10_0220.png"
+filename <- "figures/figure_10_0221.png"
 ggplot2::ggsave(file = filename, plot = p, dpi = 50, width = 5.56, height = 4.3)
 ```
 
@@ -1744,9 +1747,12 @@ ggplot2::ggsave(file = filename, plot = p, dpi = 50, width = 5.46, height = 4)
 
 ## 7.2 ssGSEA using Gene Ontology database
 
-Load the [data after quality control](#data_qc) and ST spot information.
+Load the result of the section [“Remove variables based on the mean read
+counts”](#data_qc) and ST spot information.
 
 ``` r
+pdacrna <- readRDS("<file path>")
+pdacst <- readRDS("<file path>")
 fn <- "rawdata/2020_001_Moncada/pdac_st/tissue_positions_list_spatial_object.tsv"
 ```
 
@@ -1995,9 +2001,12 @@ pdac <- readRDS("backup/10_031_pdac_ssGSEA_gobp.rds")
 
 ## 7.3 PAGODA2 using Gene Ontology database
 
-Load the [data after quality control](#data_qc) and ST spot information.
+Load the result of the section [“Remove variables based on the mean read
+counts”](#data_qc) and ST spot information.
 
 ``` r
+pdacrna <- readRDS("<file path>")
+pdacst <- readRDS("<file path>")
 fn <- "rawdata/2020_001_Moncada/pdac_st/tissue_positions_list_spatial_object.tsv"
 ```
 
@@ -2083,6 +2092,7 @@ Osaka University.
 suppressMessages(library(org.Hs.eg.db))
 ids <- unlist(lapply(mget(colnames(pdac$counts), org.Hs.egALIAS2EG,
                           ifnotfound = NA), function(x) x[1]))
+
 # Reverse map
 rids <- names(ids)
 names(rids) <- ids
@@ -2311,7 +2321,7 @@ p <- Spaniel::spanielPlot(object = surt_st, grob = surt_st@images[[1]],
   ggplot2::theme_void() +
   ggplot2::theme(text = ggplot2::element_text(size = 18, family = "Helvetica"))
 filename <- "figures/figure_10_0430.png"
-ggplot2::ggsave(file = filename, plot = p, dpi = 50, width = 5.4, height = 4.05)
+ggplot2::ggsave(file = filename, plot = p, dpi = 50, width = 5.5, height = 4.05)
 ```
 
 <img src="figures/figure_10_0430.png" width="300px">

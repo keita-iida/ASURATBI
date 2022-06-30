@@ -12,7 +12,7 @@
 
 <meta name="author" content="Keita Iida" />
 
-<meta name="date" content="2022-06-22" />
+<meta name="date" content="2022-06-30" />
 
 <title>Analysis of small cell lung cancer dataset</title>
 
@@ -335,7 +335,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <h1 class="title toc-ignore">Analysis of small cell lung cancer
 dataset</h1>
 <h4 class="author">Keita Iida</h4>
-<h4 class="date">2022-06-22</h4>
+<h4 class="date">2022-06-30</h4>
 
 
 <div id="TOC">
@@ -491,18 +491,19 @@ al., 2020), namely ASCL1, NEUROD1, YAP1, and POU2F3.</p>
 <span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>                             <span class="at">row_names_side =</span> <span class="st">&quot;right&quot;</span>, <span class="at">show_row_dend =</span> <span class="cn">FALSE</span>,</span>
 <span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>                             <span class="at">show_column_names =</span> <span class="cn">FALSE</span>, <span class="at">column_dend_side =</span> <span class="st">&quot;top&quot;</span>,</span>
 <span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>                             <span class="at">show_parent_dend_line =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a><span class="co"># mtx &lt;- t(colData(subsce)$nReads) ; rownames(mtx) &lt;- &quot;nReads&quot;</span></span>
-<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a><span class="co"># q &lt;- ComplexHeatmap::Heatmap(mtx, name = &quot;nReads&quot;,</span></span>
-<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a><span class="co">#                              cluster_columns = col_hc, show_row_names = TRUE,</span></span>
-<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a><span class="co">#                              row_names_side = &quot;right&quot;, show_row_dend = FALSE,</span></span>
-<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a><span class="co">#                              show_column_names = FALSE, show_column_dend = FALSE,</span></span>
-<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a><span class="co">#                              col = circlize::colorRamp2(c(min(mtx), max(mtx)),</span></span>
-<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a><span class="co">#                                                         c(&quot;cyan&quot;, &quot;magenta&quot;)))</span></span>
-<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a><span class="co"># p &lt;- p %v% q</span></span>
-<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a><span class="co"># p</span></span>
-<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a><span class="co"># dev.off()</span></span></code></pre></div>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>p</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a><span class="co"># mtx &lt;- t(colData(subsce)$nReads) ; rownames(mtx) &lt;- &quot;nReads&quot;</span></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a><span class="co"># q &lt;- ComplexHeatmap::Heatmap(mtx, name = &quot;nReads&quot;,</span></span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a><span class="co">#                              cluster_columns = col_hc, show_row_names = TRUE,</span></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a><span class="co">#                              row_names_side = &quot;right&quot;, show_row_dend = FALSE,</span></span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a><span class="co">#                              show_column_names = FALSE, show_column_dend = FALSE,</span></span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a><span class="co">#                              col = circlize::colorRamp2(c(min(mtx), max(mtx)),</span></span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a><span class="co">#                                                         c(&quot;cyan&quot;, &quot;magenta&quot;)))</span></span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a><span class="co"># p &lt;- p %v% q</span></span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a><span class="co"># p</span></span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a><span class="co"># dev.off()</span></span></code></pre></div>
 <p><br></p>
 <div id="remove-variables-based-on-expression-profiles" class="section level3" number="5.1.1">
 <h3><span class="header-section-number">5.1.1</span> Remove variables

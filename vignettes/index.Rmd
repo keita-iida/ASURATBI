@@ -27,6 +27,7 @@ knitr::opts_chunk$set(
 * [Additional computations for the PBMC datasets](https://keita-iida.github.io/ASURATBI/06-pbmcs.html)
 * [Analyses of single-cell transcriptomes of small cell lung cancer (Stewart et al., 2020)](https://keita-iida.github.io/ASURATBI/01-sclc.html)
 * [Analyses of single-cell and spatial transcriptomes of pancreatid ductal adenocarcinoma (Moncada et al., 2020)](https://keita-iida.github.io/ASURATBI/05-pdac.html)
+* [Miscellaneous](https://keita-iida.github.io/ASURATBI/07-misc.html)
 
 
 
