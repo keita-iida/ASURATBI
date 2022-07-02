@@ -1,7 +1,7 @@
 Miscellaneous
 ================
 Keita Iida
-2022-06-30
+2022-07-02
 
 -   [1 Computational environment](#1-computational-environment)
 -   [2 Install libraries](#2-install-libraries)
@@ -39,8 +39,7 @@ Select GO IDs of interest.
 
 ``` r
 GOOI <- c("GO:0070371",  # ERK1 and ERK2 cascade
-          "GO:1904666",  # regulation of ubiquitin protein ligase activity
-          "GO:0032070")  # regulation of deoxyribonuclease activity
+          "GO:1904666")  # regulation of ubiquitin protein ligase activity
 ```
 
 Load the result of the section “Normalize data” in [SCLC data
@@ -121,7 +120,7 @@ label[which(goi_all %in% goi_strg)] <- 1
 label[which(goi_all %in% goi_vari)] <- 2
 label[which(goi_all %in% goi_weak)] <- 3
 colors <- label
-colors[which(colors == 1)] <- "grey50"
+colors[which(colors == 1)] <- "grey60"
 colors[which(colors == 2)] <- "grey80"
 colors[which(colors == 3)] <- "white"
 text_colors <- "black"
@@ -137,7 +136,7 @@ qgraph::qgraph(input = cmat, title = title, title.cex = 0.3, filename = filename
 ```
 
 where the average correlation coefficients of SCG, VCG, and WCG are
-0.3389764, 0.2280671, and 0.011150431, respectively.
+0.3389764, -0.2280671, and 0.011150431, respectively.
 
 <img src="figures/figure_90_0001.png" width="300px">
 
@@ -173,8 +172,7 @@ Set a GO term of interest.
 
 ``` r
 GOOI <- c("GOBP_ERK1_AND_ERK2_CASCADE",
-          "GOBP_REGULATION_OF_UBIQUITIN_PROTEIN_LIGASE_ACTIVITY",
-          "GOBP_REGULATION_OF_DEOXYRIBONUCLEASE_ACTIVITY")
+          "GOBP_REGULATION_OF_UBIQUITIN_PROTEIN_LIGASE_ACTIVITY")
 ```
 
 Load the result of the section “Normalize data” in [SCLC data
@@ -218,17 +216,17 @@ sclc@misc[["enrichIt"]] <- ES
     [1] "Using sets of 1000 cells. Running 3 times."
     Setting parallel calculations through a SnowParam back-end
     with workers=4 and tasks=100.
-    Estimating ssGSEA scores for 3 gene sets.
+    Estimating ssGSEA scores for 2 gene sets.
     [1] "Calculating ranks..."
     [1] "Calculating absolute values from ranks..."
     Setting parallel calculations through a SnowParam back-end
     with workers=4 and tasks=100.
-    Estimating ssGSEA scores for 3 gene sets.
+    Estimating ssGSEA scores for 2 gene sets.
     [1] "Calculating ranks..."
     [1] "Calculating absolute values from ranks..."
     Setting parallel calculations through a SnowParam back-end
     with workers=4 and tasks=100.
-    Estimating ssGSEA scores for 3 gene sets.
+    Estimating ssGSEA scores for 2 gene sets.
     [1] "Calculating ranks..."
     [1] "Calculating absolute values from ranks..."
 
@@ -246,8 +244,7 @@ Set GO terms of interest.
 
 ``` r
 GOOI <- c("GO:0070371",  # ERK1 and ERK2 cascade
-          "GO:1904666",  # regulation of ubiquitin protein ligase activity
-          "GO:0032070")  # regulation of deoxyribonuclease activity
+          "GO:1904666")  # regulation of ubiquitin protein ligase activity
 ```
 
 Load the result of the section “Normalize data” in [SCLC data
@@ -331,11 +328,11 @@ sclc$testPathwayOverdispersion(setenv = go.env, verbose = TRUE,
 ```
 
     determining valid pathways
-    processing 3 valid pathways
+    processing 2 valid pathways
     scoring pathway od signifcance
     compiling pathway reduction
-    clustering aspects based on gene loading ... 3 aspects remaining
-    clustering aspects based on pattern similarity ... 3 aspects remaining
+    clustering aspects based on gene loading ... 2 aspects remaining
+    clustering aspects based on pattern similarity ... 2 aspects remaining
 
 <br>
 
@@ -349,19 +346,18 @@ sclc_ssgsea <- readRDS("<file path>")
 sclc_pagoda <- readRDS("<file path>")
 ```
 
-Create score-by-sample matrices.
+Create score-by-sample (cell) matrices.
 
 ``` r
 mat_asurat <- as.matrix(assay(sclc_asurat$GO, "counts"))
 mat_ssgsea <- t(as.matrix(sclc_ssgsea@misc[["enrichIt"]]))
 mat_pagoda <- sclc_pagoda[["misc"]][["pathwayOD"]][["xv"]]
-rownames(mat_ssgsea) <- c("GO:0070371", "GO:0032070", "GO:1904666")
+rownames(mat_ssgsea) <- c("GO:0070371", "GO:1904666")
 rownames(mat_pagoda) <- c(sclc_pagoda[["misc"]][["pathwayOD"]][["cnam"]][["aspect1"]],
-                          sclc_pagoda[["misc"]][["pathwayOD"]][["cnam"]][["aspect2"]],
-                          sclc_pagoda[["misc"]][["pathwayOD"]][["cnam"]][["aspect3"]])
+                          sclc_pagoda[["misc"]][["pathwayOD"]][["cnam"]][["aspect2"]])
 
 # Select rows.
-submat_asurat <- as.matrix(mat_asurat[c(2, 5), ])
+submat_asurat <- as.matrix(mat_asurat[c(1, 3), ])
 submat_ssgsea <- as.matrix(mat_ssgsea[1, ])
 submat_pagoda <- as.matrix(mat_pagoda[2, ])
 submat_ssgsea <- t(submat_ssgsea) ; rownames(submat_ssgsea) <- rownames(mat_ssgsea)[1]
@@ -369,7 +365,7 @@ submat_pagoda <- t(submat_pagoda) ; rownames(submat_pagoda) <- rownames(mat_pago
 
 # Select columns by random sampling.
 set.seed(1)
-inds <- sample(ncol(mat_asurat), size = 2000, replace = FALSE)
+inds <- sample(ncol(mat_asurat), size = 1000, replace = FALSE)
 submat_asurat <- as.matrix(submat_asurat[, inds])
 submat_ssgsea <- as.matrix(submat_ssgsea[, inds])
 submat_pagoda <- as.matrix(submat_pagoda[, inds])
@@ -380,50 +376,78 @@ submat_pagoda <- t(submat_pagoda) ; rownames(submat_pagoda) <- rownames(mat_pago
 submat_asurat <- t(scale(t(submat_asurat)))
 submat_ssgsea <- t(scale(t(submat_ssgsea)))
 submat_pagoda <- t(scale(t(submat_pagoda)))
+```
 
-# Perform hierarchical clustering.
-set.seed(1)
-colhc_asurat <- hclust(dist(t(submat_asurat)), method = "ward.D2")
-colhc_ssgsea <- hclust(dist(t(submat_ssgsea)), method = "ward.D2")
-colhc_pagoda <- hclust(dist(t(submat_pagoda)), method = "ward.D2")
+Create gene expression matrices.
+
+``` r
+genes <- c("JUN", "MIF")
+mat_geneex <- assay(altExp(sclc_asurat$GO), "counts")
+mat_geneex <- mat_geneex[genes, ]
+
+# Select columns.
+submat_geneex <- as.matrix(mat_geneex[, inds])
+
+# Scale data.
+submat_geneex <- t(scale(t(submat_geneex)))
 ```
 
 Examine the scores of samples (cells).
 
 ``` r
+suppressMessages(library(ComplexHeatmap))
+
 filename <- "figures/figure_90_0010.png"
-png(file = filename, height = 120, width = 400, res = 80)
+#png(file = filename, height = 120, width = 400, res = 80)
+png(file = filename, height = 600, width = 2000, res = 400)
 p <- ComplexHeatmap::Heatmap(submat_asurat, column_title = "ASURAT",
                              name = "Scaled\nSign scores",
-                             cluster_columns = colhc_asurat,
                              cluster_rows = FALSE, show_row_names = TRUE,
                              row_names_side = "right", show_row_dend = FALSE,
                              show_column_names = FALSE, column_dend_side = "top",
                              show_parent_dend_line = FALSE)
+q <- ComplexHeatmap::Heatmap(submat_geneex, name = "Scaled\nExpression",
+                             cluster_rows = FALSE, show_row_names = TRUE,
+                             row_names_side = "right", show_row_dend = FALSE,
+                             show_column_names = FALSE,
+                             show_parent_dend_line = FALSE)
+p <- p %v% q
 p
 dev.off()
 
 filename <- "figures/figure_90_0011.png"
-png(file = filename, height = 120, width = 392, res = 80)
+#png(file = filename, height = 120, width = 400, res = 80)
+png(file = filename, height = 600, width = 2000, res = 400)
 p <- ComplexHeatmap::Heatmap(submat_ssgsea, column_title = "ssGSEA",
                              name = "Scaled\nssGSEA score",
-                             cluster_columns = colhc_ssgsea,
                              cluster_rows = FALSE, show_row_names = TRUE,
                              row_names_side = "right", show_row_dend = FALSE,
                              show_column_names = FALSE, column_dend_side = "top",
                              show_parent_dend_line = FALSE)
+q <- ComplexHeatmap::Heatmap(submat_geneex, name = "Scaled\nExpression",
+                             cluster_rows = FALSE, show_row_names = TRUE,
+                             row_names_side = "right", show_row_dend = FALSE,
+                             show_column_names = FALSE,
+                             show_parent_dend_line = FALSE)
+p <- p %v% q
 p
 dev.off()
 
 filename <- "figures/figure_90_0012.png"
-png(file = filename, height = 120, width = 442, res = 80)
+#png(file = filename, height = 120, width = 440, res = 80)
+png(file = filename, height = 620, width = 2200, res = 400)
 p <- ComplexHeatmap::Heatmap(submat_pagoda, column_title = "PAGODA2",
                              name = "Scaled\nPC1 score",
-                             cluster_columns = colhc_pagoda,
                              cluster_rows = FALSE, show_row_names = TRUE,
                              row_names_side = "right", show_row_dend = FALSE,
                              show_column_names = FALSE, column_dend_side = "top",
                              show_parent_dend_line = FALSE)
+q <- ComplexHeatmap::Heatmap(submat_geneex, name = "Scaled\nExpression",
+                             cluster_rows = FALSE, show_row_names = TRUE,
+                             row_names_side = "right", show_row_dend = FALSE,
+                             show_column_names = FALSE,
+                             show_parent_dend_line = FALSE)
+p <- p %v% q
 p
 dev.off()
 ```

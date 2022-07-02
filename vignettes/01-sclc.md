@@ -1,7 +1,7 @@
 Analysis of small cell lung cancer dataset
 ================
 Keita Iida
-2022-06-30
+2022-07-02
 
 -   [1 Computational environment](#1-computational-environment)
 -   [2 Install libraries](#2-install-libraries)
@@ -153,23 +153,20 @@ inds <- sample(ncol(sce), size = 1000, replace = FALSE)
 subsce <- sce[genes, inds]
 mat <- log(as.matrix(assay(subsce, "counts")) + 1)
 set.seed(1)
-col_hc <- hclust(dist(t(mat)), method = "ward.D2")
 
 filename <- "figures/figure_01_0005.png"
 png(file = filename, height = 200, width = 520, res = 100)
 #png(file = filename, height = 580, width = 1600, res = 300)
 p <- ComplexHeatmap::Heatmap(mat, column_title = "SCLC",
-                             name = "Log1p\nexpression", cluster_columns = col_hc,
-                             cluster_rows = FALSE, show_row_names = TRUE,
-                             row_names_side = "right", show_row_dend = FALSE,
-                             show_column_names = FALSE, column_dend_side = "top",
-                             show_parent_dend_line = FALSE)
+                             name = "Log1p\nexpression", cluster_rows = FALSE,
+                             show_row_names = TRUE, row_names_side = "right",
+                             show_row_dend = FALSE, show_column_names = FALSE,
+                             column_dend_side = "top", show_parent_dend_line = FALSE)
 p
 dev.off()
 
 # mtx <- t(colData(subsce)$nReads) ; rownames(mtx) <- "nReads"
-# q <- ComplexHeatmap::Heatmap(mtx, name = "nReads",
-#                              cluster_columns = col_hc, show_row_names = TRUE,
+# q <- ComplexHeatmap::Heatmap(mtx, name = "nReads", show_row_names = TRUE,
 #                              row_names_side = "right", show_row_dend = FALSE,
 #                              show_column_names = FALSE, show_column_dend = FALSE,
 #                              col = circlize::colorRamp2(c(min(mtx), max(mtx)),

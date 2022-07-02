@@ -1563,6 +1563,11 @@ ST spot information.
 ```{r, eval = FALSE, echo = FALSE}
 pdacrna <- readRDS("backup/08_002_pdacrna_dataqc.rds")
 pdacst <- readRDS("backup/09_002_pdacst_dataqc.rds")
+
+# Load customized Spaniel functions.
+source("../R/Spaniel/R/spanielPlot.R")
+source("../R/Spaniel/R/spanielPlotInternals.R")
+source("../R/Spaniel/R/utilities.R")
 ```
 ```{r, eval = FALSE}
 pdacrna <- readRDS("<file path>")
@@ -1775,7 +1780,8 @@ View(surt@misc$stat[which(surt@misc$stat$p_val_adj < 10^(-100)), ])
 Defining significant genes as genes with FDR<1e-100, infer cell states
 using [GeneCards](https://www.genecards.org/).
 ```
-0: Unspecified      # Only six genes are detected.
+0: Cancer           # TM4SF4 (p_val_adj ~e-165), CEACAM6 (p_val_adj ~e-155),
+                    # SPP1 (p_val_adj ~e-106)
 1: Pancreatic cell  # REG1A (p_val_adj ~e-191), REG3A (p_val_adj ~e-163)
 2: Cancer           # S100P (p_val_adj ~e-191), FSCN1 (p_val_adj ~e-107)
 3: Pancreatic cell  # AMY1C (p_val_adj ~e-256), AMY1B (p_val_adj ~e-159)
@@ -1788,9 +1794,9 @@ using [GeneCards](https://www.genecards.org/).
 ```{r, eval = FALSE}
 tmp <- as.integer(as.character(surt$seurat_clusters))
 surt$cell_state <- tmp
-surt$cell_state[surt$cell_state == 0] <- "Unspecified"
+surt$cell_state[surt$cell_state == 0] <- "Cancer-1"
 surt$cell_state[surt$cell_state == 1] <- "Pancreas-1"
-surt$cell_state[surt$cell_state == 2] <- "Cancer"
+surt$cell_state[surt$cell_state == 2] <- "Cancer-2"
 surt$cell_state[surt$cell_state == 3] <- "Pancreas-2"
 surt$cell_state[surt$cell_state == 4] <- "Lymphocyte"
 surt$cell_state[surt$cell_state == 5] <- "Unspecified"
@@ -1800,10 +1806,12 @@ surt$cell_state[surt$cell_state == 6] <- "Unspecified"
 Show the annotation results in low-dimensional spaces.
 ```{r, eval = FALSE}
 title <- "PDAC (Seurat)"
-lv <- c("Pancreas-1", "Pancreas-2", "Cancer", "Lymphocyte", "Unspecified")
+lv <- c("Pancreas-1", "Pancreas-2", "Cancer-1", "Cancer-2", "Lymphocyte",
+        "Unspecified")
 labels <- factor(surt$cell_state, levels = lv)
 mycolor <- c("Pancreas-1" = "deepskyblue1", "Pancreas-2" = "limegreen",
-             "Cancer" = "grey20", "Lymphocyte" = "red", "Unspecified" = "grey80")
+             "Cancer-1" = "purple", "Cancer-2" = "grey20",
+             "Lymphocyte" = "red", "Unspecified" = "grey80")
 df <- surt@reductions[["tsne"]]@cell.embeddings
 p <- ggplot2::ggplot() +
   ggplot2::geom_point(ggplot2::aes(x = df[, 1], y = df[, 2], color = labels),
@@ -1822,10 +1830,12 @@ ggplot2::ggsave(file = filename, plot = p, dpi = 50, width = 6.2, height = 4.3)
 Show annotation results on tissue images.
 ```{r, eval = FALSE}
 title <- "PDAC (Seurat)"
-lv <- c("Pancreas-1", "Pancreas-2", "Cancer", "Lymphocyte", "Unspecified")
+lv <- c("Pancreas-1", "Pancreas-2", "Cancer-1", "Cancer-2", "Lymphocyte",
+        "Unspecified")
 labels <- factor(surt$cell_state, levels = lv)
 mycolor <- c("Pancreas-1" = "deepskyblue1", "Pancreas-2" = "limegreen",
-             "Cancer" = "grey20", "Lymphocyte" = "red", "Unspecified" = "grey80")
+             "Cancer-1" = "purple", "Cancer-2" = "grey20",
+             "Lymphocyte" = "red", "Unspecified" = "grey80")
 surt_st <- surt[, grepl("ST", surt$batch)]
 p <- Spaniel::spanielPlot(object = surt_st, grob = surt_st@images[[1]],
                           plotType = "Cluster", clusterRes = "cell_state",
