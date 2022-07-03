@@ -1,16 +1,17 @@
 Miscellaneous
 ================
 Keita Iida
-2022-07-02
+2022-07-03
 
 -   [1 Computational environment](#1-computational-environment)
 -   [2 Install libraries](#2-install-libraries)
--   [3 Investigate gene expression
-    correlations](#3-investigate-gene-expression-correlations)
-    -   [3.1 ASURAT](#31-asurat)
-    -   [3.2 ssGSEA](#32-ssgsea)
-    -   [3.3 PAGODA2](#33-pagoda2)
-    -   [3.4 Compare the results](#34-compare-the-results)
+-   [3 Compute separation indices](#3-compute-separation-indices)
+-   [4 Investigate gene expression
+    correlations](#4-investigate-gene-expression-correlations)
+    -   [4.1 ASURAT](#41-asurat)
+    -   [4.2 ssGSEA](#42-ssgsea)
+    -   [4.3 PAGODA2](#43-pagoda2)
+    -   [4.4 Compare the results](#44-compare-the-results)
 
 # 1 Computational environment
 
@@ -31,9 +32,63 @@ library(SummarizedExperiment)
 
 <br>
 
-# 3 Investigate gene expression correlations
+# 3 Compute separation indices
 
-## 3.1 ASURAT
+Create random variables following Normal distributions and compute
+separation indices.
+
+``` r
+for(i in seq_len(10)){
+  if(i %in% c(1, 2, 7, 6, 8, 10)){
+    next
+  }
+  set.seed(1)
+  mat <- cbind(t(rnorm(1000, mean = 5, sd = 1)),
+               t(rnorm(1000, mean = 1 + 1 * (i - 1), sd = 1)))
+  rownames(mat) <- paste0("Try_", i)
+  colnames(mat) <- as.character(seq_len(2000))
+  rowdata <- data.frame(ParentSignID = "ID_1", Description = "Test",
+                        CorrGene = "GENE_A", WeakCorrGene = "GENE_B", IC = 1)
+  sce <- SingleCellExperiment(assays = list(counts = mat), rowData = rowdata)
+  colData(sce)$Label <- c(rep(0, 1000), rep(1, 1000))
+  ident_1 <- 1
+  ident_2 <- 0
+  sce <- compute_sepI_clusters(sce = sce, labels = colData(sce)$Label,
+                               ident_1 = ident_1, ident_2 = ident_2)
+  label_name <- paste0("Label_", ident_1, "_vs_", ident_2)
+  sepI <- metadata(sce)$marker_signs[[label_name]]$sepI
+  df <- data.frame(s = as.numeric(mat), l = colData(sce)$Label)
+  mytext <- paste("I = ", round(sepI, digits = 3), sep = "")
+  mycolors <- c(rainbow(3)[1], rainbow(3)[3])
+  color <- factor(df$l, levels = c(ident_1, ident_2))
+  p <- ggplot2::ggplot(df, ggplot2::aes(x = s, y = 0, color = color)) +
+    ggplot2::geom_jitter(width = 0, alpha = 0.4, size = .5) +
+    ggplot2::theme_classic(base_size = 18) +
+    ggplot2::scale_y_continuous(breaks = NULL) +
+    ggplot2::scale_colour_manual(values = mycolors) +
+    ggplot2::labs(title = "", x = "Score", y = "", color = "Label") +
+    ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5, vjust = -1,
+                                                      size = 16)) +
+    ggplot2::annotate("text", x = Inf, y = Inf, label = mytext,
+                      hjust = 1, vjust = 1, size = 5) +
+    ggplot2::guides(colour = ggplot2::guide_legend(override.aes = list(size = 4)))
+  p <- ggExtra::ggMarginal(p, type = "density", margins = "x", size = 0.8,
+                           groupColour = TRUE, groupFill = TRUE)
+  filename <- sprintf("figures/figure_90_%04d.png", 19 + i)
+  ggplot2::ggsave(file = filename, plot = p, dpi = 50, width = 4, height = 3)
+}
+```
+
+<img src="figures/figure_90_0022.png" width="300px">
+<img src="figures/figure_90_0023.png" width="300px">
+<img src="figures/figure_90_0024.png" width="300px">
+<img src="figures/figure_90_0028.png" width="300px">
+
+<br>
+
+# 4 Investigate gene expression correlations
+
+## 4.1 ASURAT
 
 Select GO IDs of interest.
 
@@ -157,7 +212,7 @@ sclcs$GO <- makeSignMatrix(sce = sclcs$GO, weight_strg = 0.5, weight_vari = 0.5)
 
 <br>
 
-## 3.2 ssGSEA
+## 4.2 ssGSEA
 
 Install an escape package v1.5, which requires R (\>= 4.1).
 
@@ -232,7 +287,7 @@ sclc@misc[["enrichIt"]] <- ES
 
 <br>
 
-## 3.3 PAGODA2
+## 4.3 PAGODA2
 
 ``` r
 packageVersion("pagoda2")
@@ -336,7 +391,7 @@ sclc$testPathwayOverdispersion(setenv = go.env, verbose = TRUE,
 
 <br>
 
-## 3.4 Compare the results
+## 4.4 Compare the results
 
 Load the above computational results.
 
