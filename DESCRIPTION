@@ -1,7 +1,7 @@
 Package: ASURATBI
 Type: Package
 Title: A pipeline especially built for computing several single-cell datasets
-Version: 0.0.3
+Version: 0.0.4
 Authors@R: c(person("Keita", "Iida", email = "kiida@protein.osaka-u.ac.jp",
              role = c("aut", "cre"),
              comment = c(ORCID = "0000-0002-1076-830X")))
@@ -31,6 +31,7 @@ Imports:
     graphics
 Suggests:
     ggplot2,
+    ggExtra,
     TENxPBMCData,
     dplyr,
     bayNorm,
