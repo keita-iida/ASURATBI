@@ -1,7 +1,7 @@
 Miscellaneous
 ================
 Keita Iida
-2022-07-03
+2022-07-05
 
 -   [1 Computational environment](#1-computational-environment)
 -   [2 Install libraries](#2-install-libraries)
@@ -38,29 +38,28 @@ Create random variables following Normal distributions and compute
 separation indices.
 
 ``` r
-for(i in seq_len(10)){
-  if(i %in% c(1, 2, 7, 6, 8, 10)){
-    next
-  }
+size <- 1000
+for(i in c(3, 4, 5, 9)){
+  # Preparation
   set.seed(1)
-  mat <- cbind(t(rnorm(1000, mean = 5, sd = 1)),
-               t(rnorm(1000, mean = 1 + 1 * (i - 1), sd = 1)))
-  rownames(mat) <- paste0("Try_", i)
-  colnames(mat) <- as.character(seq_len(2000))
-  rowdata <- data.frame(ParentSignID = "ID_1", Description = "Test",
-                        CorrGene = "GENE_A", WeakCorrGene = "GENE_B", IC = 1)
-  sce <- SingleCellExperiment(assays = list(counts = mat), rowData = rowdata)
-  colData(sce)$Label <- c(rep(0, 1000), rep(1, 1000))
-  ident_1 <- 1
-  ident_2 <- 0
-  sce <- compute_sepI_clusters(sce = sce, labels = colData(sce)$Label,
-                               ident_1 = ident_1, ident_2 = ident_2)
-  label_name <- paste0("Label_", ident_1, "_vs_", ident_2)
-  sepI <- metadata(sce)$marker_signs[[label_name]]$sepI
-  df <- data.frame(s = as.numeric(mat), l = colData(sce)$Label)
+  scores_0 <- as.numeric(rnorm(size, mean = 5, sd = 1))
+  names(scores_0) <- seq_len(size)
+  scores_1 <- as.numeric(rnorm(size, mean = 1 + 1 * (i - 1), sd = 1))
+  names(scores_1) <- size + seq_len(size)
+  scores <- c(scores_0, scores_1)
+  scores <- sort(scores, decreasing = FALSE)
+  vec <- ifelse(as.integer(names(scores)) <= size, 0, 1)
+
+  # Count the number of steps in bubble sort.
+  dist1 <- bubble_sort(list(vec, 0))[[2]]     # dist(vec, (0,...,1)).
+  dist2 <- bubble_sort(list(1 - vec, 0))[[2]] # dist(vec, (1,...,0)).
+  sepI <- round((dist2 - dist1) / (dist2 + dist1), digits = 6)
+
+  # Plot the result.
+  df <- data.frame(s = scores, l = vec)
   mytext <- paste("I = ", round(sepI, digits = 3), sep = "")
   mycolors <- c(rainbow(3)[1], rainbow(3)[3])
-  color <- factor(df$l, levels = c(ident_1, ident_2))
+  color <- factor(df$l, levels = c(1, 0))
   p <- ggplot2::ggplot(df, ggplot2::aes(x = s, y = 0, color = color)) +
     ggplot2::geom_jitter(width = 0, alpha = 0.4, size = .5) +
     ggplot2::theme_classic(base_size = 18) +
@@ -453,8 +452,8 @@ Examine the scores of samples (cells).
 suppressMessages(library(ComplexHeatmap))
 
 filename <- "figures/figure_90_0010.png"
-#png(file = filename, height = 120, width = 400, res = 80)
-png(file = filename, height = 600, width = 2000, res = 400)
+png(file = filename, height = 120, width = 400, res = 80)
+#png(file = filename, height = 600, width = 2000, res = 400)
 p <- ComplexHeatmap::Heatmap(submat_asurat, column_title = "ASURAT",
                              name = "Scaled\nSign scores",
                              cluster_rows = FALSE, show_row_names = TRUE,
@@ -471,8 +470,8 @@ p
 dev.off()
 
 filename <- "figures/figure_90_0011.png"
-#png(file = filename, height = 120, width = 400, res = 80)
-png(file = filename, height = 600, width = 2000, res = 400)
+png(file = filename, height = 120, width = 400, res = 80)
+#png(file = filename, height = 600, width = 2000, res = 400)
 p <- ComplexHeatmap::Heatmap(submat_ssgsea, column_title = "ssGSEA",
                              name = "Scaled\nssGSEA score",
                              cluster_rows = FALSE, show_row_names = TRUE,
@@ -489,8 +488,8 @@ p
 dev.off()
 
 filename <- "figures/figure_90_0012.png"
-#png(file = filename, height = 120, width = 440, res = 80)
-png(file = filename, height = 620, width = 2200, res = 400)
+png(file = filename, height = 120, width = 440, res = 80)
+#png(file = filename, height = 620, width = 2200, res = 400)
 p <- ComplexHeatmap::Heatmap(submat_pagoda, column_title = "PAGODA2",
                              name = "Scaled\nPC1 score",
                              cluster_rows = FALSE, show_row_names = TRUE,
