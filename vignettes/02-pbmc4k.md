@@ -1,7 +1,7 @@
 Analysis of 10x PBMC 4k dataset
 ================
 Keita Iida
-2022-07-02
+2022-07-06
 
 -   [1 Computational environment](#1-computational-environment)
 -   [2 Install libraries](#2-install-libraries)
@@ -1089,7 +1089,7 @@ Show the clustering results.
 
 ``` r
 title <- "PBMC 4k (Seurat)"
-labels <- pbmc@meta.data[["seurat_clusters"]]
+labels <- pbmc$seurat_clusters
 df <- pbmc@reductions[["umap"]]@cell.embeddings
 p <- ggplot2::ggplot() +
   ggplot2::geom_point(ggplot2::aes(x = df[, 1], y = df[, 2], color = labels),
@@ -1131,21 +1131,20 @@ using [GeneCards](https://www.genecards.org/).
     4: Dendritic cell  # LILRA4 (p_val_adj ~e-270)
 
 ``` r
-tmp <- as.integer(as.character(pbmc@meta.data[["seurat_clusters"]]))
-pbmc@meta.data[["cell_type"]] <- tmp
-pbmc@meta.data[["cell_type"]][pbmc@meta.data[["cell_type"]] == 0] <- "T"
-pbmc@meta.data[["cell_type"]][pbmc@meta.data[["cell_type"]] == 1] <- "Mono"
-pbmc@meta.data[["cell_type"]][pbmc@meta.data[["cell_type"]] == 2] <- "NK/NKT"
-pbmc@meta.data[["cell_type"]][pbmc@meta.data[["cell_type"]] == 3] <- "B"
-pbmc@meta.data[["cell_type"]][pbmc@meta.data[["cell_type"]] == 4] <- "DC"
+tmp <- as.integer(as.character(pbmc$seurat_clusters))
+pbmc$cell_type <- tmp
+pbmc$cell_type[pbmc$cell_type == 0] <- "T"
+pbmc$cell_type[pbmc$cell_type == 1] <- "Mono"
+pbmc$cell_type[pbmc$cell_type == 2] <- "NK/NKT"
+pbmc$cell_type[pbmc$cell_type == 3] <- "B"
+pbmc$cell_type[pbmc$cell_type == 4] <- "DC"
 ```
 
 Show the annotation results in low-dimensional spaces.
 
 ``` r
 title <- "PBMC 4k (Seurat)"
-labels <- factor(pbmc@meta.data[["cell_type"]],
-                 levels = c("T", "Mono", "NK/NKT", "B", "DC"))
+labels <- factor(pbmc$cell_type, levels = c("T", "Mono", "NK/NKT", "B", "DC"))
 df <- pbmc@reductions[["umap"]]@cell.embeddings
 p <- ggplot2::ggplot() +
   ggplot2::geom_point(ggplot2::aes(x = df[, 1], y = df[, 2], color = labels),
@@ -1166,8 +1165,8 @@ Show gene expression levels in low-dimensional spaces.
 ``` r
 title <- "PBMC 4k (Seurat)"
 genes <- c("TRAC", "LYZ", "NKG7", "CD79A", "LILRA4")
-labels <- pbmc@meta.data[["seurat_clusters"]]
-mat <- as.matrix(pbmc@assays[["RNA"]]@data)
+labels <- pbmc$seurat_clusters
+mat <- as.matrix(Seurat::GetAssayData(object = pbmc, slot = "data"))
 for(i in seq_along(genes)){
   expr <- mat[which(rownames(mat) == genes[i]), ]
   p <- ggplot2::ggplot() +
@@ -1221,11 +1220,10 @@ pbmc <- readRDS("backup/04_021_pbmc4k_seurat.rds")
 Create scCATCH objects.
 
 ``` r
-mat <- as.matrix(pbmc@assays[["RNA"]]@data)
+mat <- as.matrix(Seurat::GetAssayData(object = pbmc, slot = "data"))
 mat <- scCATCH::rev_gene(data = mat, data_type = "data", species = "Human",
                          geneinfo = scCATCH::geneinfo)
-
-labels <- as.character(pbmc@meta.data[["seurat_clusters"]])
+labels <- as.character(pbmc$seurat_clusters)
 scc <- scCATCH::createscCATCH(data = mat, cluster = labels)
 ```
 
@@ -1365,7 +1363,7 @@ pbmc <- Seurat::AddMetaData(pbmc, metadata = surt[[]]$seurat_clusters,
 Show the clustering results in low-dimensional spaces.
 
 ``` r
-labels <- pbmc@meta.data[["ssgsea_clusters"]]
+labels <- pbmc$ssgsea_clusters
 df <- as.data.frame(pbmc@reductions[["umap_ssgsea"]])
 p <- ggplot2::ggplot() +
   ggplot2::geom_point(ggplot2::aes(x = df[, 1], y = df[, 2], color = labels),
@@ -1405,7 +1403,7 @@ Investigate “significant” modules for Seurat clustering results.
 ``` r
 set.seed(1)
 surt <- Seurat::CreateSeuratObject(counts = t(pbmc@misc[["enrichIt"]]))
-surt <- Seurat::AddMetaData(surt, metadata = pbmc@meta.data[["cell_type"]],
+surt <- Seurat::AddMetaData(surt, metadata = pbmc$cell_type,
                             col.name = "seurat_cell_type")
 surt <- Seurat::SetIdent(surt, value = "seurat_cell_type")
 res <- Seurat::FindAllMarkers(surt, only.pos = TRUE,
@@ -1419,7 +1417,7 @@ results.
 
 ``` r
 lvs <- c("T", "Mono", "NK/NKT", "B", "DC")
-labels <- factor(pbmc@meta.data[["cell_type"]], levels = lvs)
+labels <- factor(pbmc$cell_type, levels = lvs)
 descriptions <- c(gsub("-", "_", "DURANTE-ADULT-OLFACTORY-NEUROEPITHELIUM-CD4-T-CELLS"),
                   gsub("-", "_", "TRAVAGLINI-LUNG-CLASSICAL-MONOCYTE-CELL"),
                   gsub("-", "_", "TRAVAGLINI-LUNG-NATURAL-KILLER-T-CELL"),

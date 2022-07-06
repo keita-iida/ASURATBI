@@ -1,7 +1,7 @@
 Several computations for PBMC datasets
 ================
 Keita Iida
-2022-07-02
+2022-07-06
 
 -   [1 Computational environment](#1-computational-environment)
 -   [2 Install libraries](#2-install-libraries)
@@ -636,7 +636,7 @@ surt <- Seurat::RunTSNE(surt, dims.use = seq_len(2), reduction = "pca",
                         dims = seq_len(pc), do.fast = FALSE, perplexity = 30)
 # Show the clustering results.
 title <- "PBMC 4000 cells (Seurat)"
-labels <- surt@meta.data[["seurat_clusters"]]
+labels <- surt$seurat_clusters
 df <- surt@reductions[["tsne"]]@cell.embeddings
 p <- ggplot2::ggplot() +
   ggplot2::geom_point(ggplot2::aes(x = df[, 1], y = df[, 2], color = labels),
@@ -658,13 +658,13 @@ View(surt@misc$stat[which(surt@misc$stat$p_val_adj < 10^(-100)), ])
 # 2: NK/NKT          # NKG7 (p_val_adj ~0), GZMA (p_val_adj ~0)
 # 3: B cell          # CD79A (p_val_adj ~0), CD79B (p_val_adj ~0)
 # 4: Dendritic cell  # LILRA4 (p_val_adj ~e-271), LILRB4 (p_val_adj ~e-116)
-tmp <- as.integer(as.character(surt@meta.data[["seurat_clusters"]]))
-surt@meta.data[["cell_type"]] <- tmp
-surt@meta.data[["cell_type"]][surt@meta.data[["cell_type"]] == 0] <- "T"
-surt@meta.data[["cell_type"]][surt@meta.data[["cell_type"]] == 1] <- "Mono"
-surt@meta.data[["cell_type"]][surt@meta.data[["cell_type"]] == 2] <- "NK/NKT"
-surt@meta.data[["cell_type"]][surt@meta.data[["cell_type"]] == 3] <- "B"
-surt@meta.data[["cell_type"]][surt@meta.data[["cell_type"]] == 4] <- "DC"
+tmp <- as.integer(as.character(surt$seurat_clusters))
+surt$cell_type <- tmp
+surt$cell_type[surt$cell_type == 0] <- "T"
+surt$cell_type[surt$cell_type == 1] <- "Mono"
+surt$cell_type[surt$cell_type == 2] <- "NK/NKT"
+surt$cell_type[surt$cell_type == 3] <- "B"
+surt$cell_type[surt$cell_type == 4] <- "DC"
 # Save data.
 saveRDS(surt, file = "backup/20_001_pbmc4000_seurat.rds")
 # Load data.
@@ -803,7 +803,7 @@ surt <- Seurat::RunTSNE(surt, dims.use = seq_len(2), reduction = "pca",
                         dims = seq_len(pc), do.fast = FALSE, perplexity = 30)
 # Show the clustering results.
 title <- "PBMC 3000 cells (Seurat)"
-labels <- surt@meta.data[["seurat_clusters"]]
+labels <- surt$seurat_clusters
 df <- surt@reductions[["tsne"]]@cell.embeddings
 p <- ggplot2::ggplot() +
   ggplot2::geom_point(ggplot2::aes(x = df[, 1], y = df[, 2], color = labels),
@@ -825,13 +825,13 @@ View(surt@misc$stat[which(surt@misc$stat$p_val_adj < 10^(-100)), ])
 # 2: NK/NKT          # NKG7 (p_val_adj ~0), GZMA (p_val_adj ~0)
 # 3: B cell          # CD79A (p_val_adj ~0), CD79B (p_val_adj ~0)
 # 4: Dendritic cell  # LILRA4 (p_val_adj ~e-204), LILRB4 (p_val_adj ~e-102)
-tmp <- as.integer(as.character(surt@meta.data[["seurat_clusters"]]))
-surt@meta.data[["cell_type"]] <- tmp
-surt@meta.data[["cell_type"]][surt@meta.data[["cell_type"]] == 0] <- "T"
-surt@meta.data[["cell_type"]][surt@meta.data[["cell_type"]] == 1] <- "Mono"
-surt@meta.data[["cell_type"]][surt@meta.data[["cell_type"]] == 2] <- "NK/NKT"
-surt@meta.data[["cell_type"]][surt@meta.data[["cell_type"]] == 3] <- "B"
-surt@meta.data[["cell_type"]][surt@meta.data[["cell_type"]] == 4] <- "DC"
+tmp <- as.integer(as.character(surt$seurat_clusters))
+surt$cell_type <- tmp
+surt$cell_type[surt$cell_type == 0] <- "T"
+surt$cell_type[surt$cell_type == 1] <- "Mono"
+surt$cell_type[surt$cell_type == 2] <- "NK/NKT"
+surt$cell_type[surt$cell_type == 3] <- "B"
+surt$cell_type[surt$cell_type == 4] <- "DC"
 # Save data.
 saveRDS(surt, file = "backup/20_002_pbmc3000_seurat.rds")
 # Load data.
@@ -970,7 +970,7 @@ surt <- Seurat::RunTSNE(surt, dims.use = seq_len(2), reduction = "pca",
                         dims = seq_len(pc), do.fast = FALSE, perplexity = 30)
 # Show the clustering results.
 title <- "PBMC 2000 cells (Seurat)"
-labels <- surt@meta.data[["seurat_clusters"]]
+labels <- surt$seurat_clusters
 df <- surt@reductions[["tsne"]]@cell.embeddings
 p <- ggplot2::ggplot() +
   ggplot2::geom_point(ggplot2::aes(x = df[, 1], y = df[, 2], color = labels),
@@ -992,13 +992,13 @@ View(surt@misc$stat[which(surt@misc$stat$p_val_adj < 10^(-100)), ])
 # 2: NK/NKT          # GZMA (p_val_adj ~e-238), NKG7 (p_val_adj ~e-220)
 # 3: B cell          # CD79A (p_val_adj ~e-302), MS4A1 (p_val_adj ~e-300)
 # 4: Dendritic cell? # LILRA4 (p_val_adj ~e-129)
-tmp <- as.integer(as.character(surt@meta.data[["seurat_clusters"]]))
-surt@meta.data[["cell_type"]] <- tmp
-surt@meta.data[["cell_type"]][surt@meta.data[["cell_type"]] == 0] <- "T"
-surt@meta.data[["cell_type"]][surt@meta.data[["cell_type"]] == 1] <- "Mono"
-surt@meta.data[["cell_type"]][surt@meta.data[["cell_type"]] == 2] <- "NK/NKT"
-surt@meta.data[["cell_type"]][surt@meta.data[["cell_type"]] == 3] <- "B"
-surt@meta.data[["cell_type"]][surt@meta.data[["cell_type"]] == 4] <- "DC"
+tmp <- as.integer(as.character(surt$seurat_clusters))
+surt$cell_type <- tmp
+surt$cell_type[surt$cell_type == 0] <- "T"
+surt$cell_type[surt$cell_type == 1] <- "Mono"
+surt$cell_type[surt$cell_type == 2] <- "NK/NKT"
+surt$cell_type[surt$cell_type == 3] <- "B"
+surt$cell_type[surt$cell_type == 4] <- "DC"
 # Save data.
 saveRDS(surt, file = "backup/20_003_pbmc2000_seurat.rds")
 # Load data.
@@ -1133,7 +1133,7 @@ surt <- Seurat::RunTSNE(surt, dims.use = seq_len(2), reduction = "pca",
                         dims = seq_len(pc), do.fast = FALSE, perplexity = 30)
 # Show the clustering results.
 title <- "PBMC 1500 cells (Seurat)"
-labels <- surt@meta.data[["seurat_clusters"]]
+labels <- surt$seurat_clusters
 df <- surt@reductions[["tsne"]]@cell.embeddings
 p <- ggplot2::ggplot() +
   ggplot2::geom_point(ggplot2::aes(x = df[, 1], y = df[, 2], color = labels),
@@ -1155,13 +1155,13 @@ View(surt@misc$stat[which(surt@misc$stat$p_val_adj < 10^(-100)), ])
 # 2: NK/NKT          # GZMA (p_val_adj ~e-173), NKG7 (p_val_adj ~e-164)
 # 3: B cell          # CD79A (p_val_adj ~e-231), MS4A1 (p_val_adj ~e-226)
 # 4: Dendritic cell? # FCER1A (p_val_adj ~e-176)
-tmp <- as.integer(as.character(surt@meta.data[["seurat_clusters"]]))
-surt@meta.data[["cell_type"]] <- tmp
-surt@meta.data[["cell_type"]][surt@meta.data[["cell_type"]] == 0] <- "T"
-surt@meta.data[["cell_type"]][surt@meta.data[["cell_type"]] == 1] <- "Mono"
-surt@meta.data[["cell_type"]][surt@meta.data[["cell_type"]] == 2] <- "NK/NKT"
-surt@meta.data[["cell_type"]][surt@meta.data[["cell_type"]] == 3] <- "B"
-surt@meta.data[["cell_type"]][surt@meta.data[["cell_type"]] == 4] <- "DC"
+tmp <- as.integer(as.character(surt$seurat_clusters))
+surt$cell_type <- tmp
+surt$cell_type[surt$cell_type == 0] <- "T"
+surt$cell_type[surt$cell_type == 1] <- "Mono"
+surt$cell_type[surt$cell_type == 2] <- "NK/NKT"
+surt$cell_type[surt$cell_type == 3] <- "B"
+surt$cell_type[surt$cell_type == 4] <- "DC"
 # Save data.
 saveRDS(surt, file = "backup/20_004_pbmc1500_seurat.rds")
 # Load data.
@@ -1290,7 +1290,7 @@ surt <- Seurat::RunTSNE(surt, dims.use = seq_len(2), reduction = "pca",
                         dims = seq_len(pc), do.fast = FALSE, perplexity = 30)
 # Show the clustering results.
 title <- "PBMC 1000 cells (Seurat)"
-labels <- surt@meta.data[["seurat_clusters"]]
+labels <- surt$seurat_clusters
 df <- surt@reductions[["tsne"]]@cell.embeddings
 p <- ggplot2::ggplot() +
   ggplot2::geom_point(ggplot2::aes(x = df[, 1], y = df[, 2], color = labels),
@@ -1311,12 +1311,12 @@ View(surt@misc$stat[which(surt@misc$stat$p_val_adj < 10^(-100)), ])
 # 1: Monocyte        # MNDA (p_val_adj ~e-167), FCN1 (p_val_adj ~e-161)
 # 2: NK/NKT          # GZMA (p_val_adj ~e-113), NKG7 (p_val_adj ~e-111)
 # 3: B cell          # CD79A (p_val_adj ~e-144), MS4A1 (p_val_adj ~e-132)
-tmp <- as.integer(as.character(surt@meta.data[["seurat_clusters"]]))
-surt@meta.data[["cell_type"]] <- tmp
-surt@meta.data[["cell_type"]][surt@meta.data[["cell_type"]] == 0] <- "Unspecified"
-surt@meta.data[["cell_type"]][surt@meta.data[["cell_type"]] == 1] <- "Mono"
-surt@meta.data[["cell_type"]][surt@meta.data[["cell_type"]] == 2] <- "NK/NKT"
-surt@meta.data[["cell_type"]][surt@meta.data[["cell_type"]] == 3] <- "B"
+tmp <- as.integer(as.character(surt$seurat_clusters))
+surt$cell_type <- tmp
+surt$cell_type[surt$cell_type == 0] <- "Unspecified"
+surt$cell_type[surt$cell_type == 1] <- "Mono"
+surt$cell_type[surt$cell_type == 2] <- "NK/NKT"
+surt$cell_type[surt$cell_type == 3] <- "B"
 # Save data.
 saveRDS(surt, file = "backup/20_005_pbmc1000_seurat.rds")
 # Load data.
@@ -1484,7 +1484,7 @@ surt <- Seurat::RunTSNE(surt, dims.use = seq_len(2), reduction = "pca",
                         dims = seq_len(pc), do.fast = FALSE, perplexity = 30)
 # Show the clustering results.
 title <- "PBMC 4000 cells (Seurat)"
-labels <- surt@meta.data[["seurat_clusters"]]
+labels <- surt$seurat_clusters
 df <- surt@reductions[["tsne"]]@cell.embeddings
 p <- ggplot2::ggplot() +
   ggplot2::geom_point(ggplot2::aes(x = df[, 1], y = df[, 2], color = labels),
@@ -1506,13 +1506,13 @@ View(surt@misc$stat[which(surt@misc$stat$p_val_adj < 10^(-100)), ])
 # 2: NK/NKT          # NKG7 (p_val_adj ~0), GZMA (p_val_adj ~0)
 # 3: B cell          # CD79A (p_val_adj ~0), CD79B (p_val_adj ~0)
 # 4: Dendritic cell  # LILRA4 (p_val_adj ~e-266), LILRB4 (p_val_adj ~e-113)
-tmp <- as.integer(as.character(surt@meta.data[["seurat_clusters"]]))
-surt@meta.data[["cell_type"]] <- tmp
-surt@meta.data[["cell_type"]][surt@meta.data[["cell_type"]] == 0] <- "T"
-surt@meta.data[["cell_type"]][surt@meta.data[["cell_type"]] == 1] <- "Mono"
-surt@meta.data[["cell_type"]][surt@meta.data[["cell_type"]] == 2] <- "NK/NKT"
-surt@meta.data[["cell_type"]][surt@meta.data[["cell_type"]] == 3] <- "B"
-surt@meta.data[["cell_type"]][surt@meta.data[["cell_type"]] == 4] <- "DC"
+tmp <- as.integer(as.character(surt$seurat_clusters))
+surt$cell_type <- tmp
+surt$cell_type[surt$cell_type == 0] <- "T"
+surt$cell_type[surt$cell_type == 1] <- "Mono"
+surt$cell_type[surt$cell_type == 2] <- "NK/NKT"
+surt$cell_type[surt$cell_type == 3] <- "B"
+surt$cell_type[surt$cell_type == 4] <- "DC"
 # Save data.
 saveRDS(surt, file = "backup/21_001_pbmc4000_seurat.rds")
 # Load data.
@@ -1651,7 +1651,7 @@ surt <- Seurat::RunTSNE(surt, dims.use = seq_len(2), reduction = "pca",
                         dims = seq_len(pc), do.fast = FALSE, perplexity = 30)
 # Show the clustering results.
 title <- "PBMC 3000 cells (Seurat)"
-labels <- surt@meta.data[["seurat_clusters"]]
+labels <- surt$seurat_clusters
 df <- surt@reductions[["tsne"]]@cell.embeddings
 p <- ggplot2::ggplot() +
   ggplot2::geom_point(ggplot2::aes(x = df[, 1], y = df[, 2], color = labels),
@@ -1673,13 +1673,13 @@ View(surt@misc$stat[which(surt@misc$stat$p_val_adj < 10^(-100)), ])
 # 2: Monocyte        # S100A8 (p_val_adj ~0), S100A9 (p_val_adj ~0)
 # 3: B cell          # CD79A (p_val_adj ~0), CD79B (p_val_adj ~0)
 # 4: Dendritic cell  # LILRA4 (p_val_adj ~e-178)
-tmp <- as.integer(as.character(surt@meta.data[["seurat_clusters"]]))
-surt@meta.data[["cell_type"]] <- tmp
-surt@meta.data[["cell_type"]][surt@meta.data[["cell_type"]] == 0] <- "NK/NKT"
-surt@meta.data[["cell_type"]][surt@meta.data[["cell_type"]] == 1] <- "T"
-surt@meta.data[["cell_type"]][surt@meta.data[["cell_type"]] == 2] <- "Mono"
-surt@meta.data[["cell_type"]][surt@meta.data[["cell_type"]] == 3] <- "B"
-surt@meta.data[["cell_type"]][surt@meta.data[["cell_type"]] == 4] <- "DC"
+tmp <- as.integer(as.character(surt$seurat_clusters))
+surt$cell_type <- tmp
+surt$cell_type[surt$cell_type == 0] <- "NK/NKT"
+surt$cell_type[surt$cell_type == 1] <- "T"
+surt$cell_type[surt$cell_type == 2] <- "Mono"
+surt$cell_type[surt$cell_type == 3] <- "B"
+surt$cell_type[surt$cell_type == 4] <- "DC"
 # Save data.
 saveRDS(surt, file = "backup/21_002_pbmc3000_seurat.rds")
 # Load data.
@@ -1818,7 +1818,7 @@ surt <- Seurat::RunTSNE(surt, dims.use = seq_len(2), reduction = "pca",
                         dims = seq_len(pc), do.fast = FALSE, perplexity = 30)
 # Show the clustering results.
 title <- "PBMC 2000 cells (Seurat)"
-labels <- surt@meta.data[["seurat_clusters"]]
+labels <- surt$seurat_clusters
 df <- surt@reductions[["tsne"]]@cell.embeddings
 p <- ggplot2::ggplot() +
   ggplot2::geom_point(ggplot2::aes(x = df[, 1], y = df[, 2], color = labels),
@@ -1840,13 +1840,13 @@ View(surt@misc$stat[which(surt@misc$stat$p_val_adj < 10^(-100)), ])
 # 2: NK/NKT          # GZMA (p_val_adj ~e-241), NKG7 (p_val_adj ~e-225)
 # 3: B cell          # CD79A (p_val_adj ~e-304), MS4A1 (p_val_adj ~e-303)
 # 4: Dendritic cell? # LILRA4 (p_val_adj ~e-146)
-tmp <- as.integer(as.character(surt@meta.data[["seurat_clusters"]]))
-surt@meta.data[["cell_type"]] <- tmp
-surt@meta.data[["cell_type"]][surt@meta.data[["cell_type"]] == 0] <- "T"
-surt@meta.data[["cell_type"]][surt@meta.data[["cell_type"]] == 1] <- "Mono"
-surt@meta.data[["cell_type"]][surt@meta.data[["cell_type"]] == 2] <- "NK/NKT"
-surt@meta.data[["cell_type"]][surt@meta.data[["cell_type"]] == 3] <- "B"
-surt@meta.data[["cell_type"]][surt@meta.data[["cell_type"]] == 4] <- "DC"
+tmp <- as.integer(as.character(surt$seurat_clusters))
+surt$cell_type <- tmp
+surt$cell_type[surt$cell_type == 0] <- "T"
+surt$cell_type[surt$cell_type == 1] <- "Mono"
+surt$cell_type[surt$cell_type == 2] <- "NK/NKT"
+surt$cell_type[surt$cell_type == 3] <- "B"
+surt$cell_type[surt$cell_type == 4] <- "DC"
 # Save data.
 saveRDS(surt, file = "backup/21_003_pbmc2000_seurat.rds")
 # Load data.
@@ -1981,7 +1981,7 @@ surt <- Seurat::RunTSNE(surt, dims.use = seq_len(2), reduction = "pca",
                         dims = seq_len(pc), do.fast = FALSE, perplexity = 30)
 # Show the clustering results.
 title <- "PBMC 1500 cells (Seurat)"
-labels <- surt@meta.data[["seurat_clusters"]]
+labels <- surt$seurat_clusters
 df <- surt@reductions[["tsne"]]@cell.embeddings
 p <- ggplot2::ggplot() +
   ggplot2::geom_point(ggplot2::aes(x = df[, 1], y = df[, 2], color = labels),
@@ -2003,13 +2003,13 @@ View(surt@misc$stat[which(surt@misc$stat$p_val_adj < 10^(-100)), ])
 # 2: NK/NKT          # GZMA (p_val_adj ~e-189), NKG7 (p_val_adj ~e-175)
 # 3: B cell          # CD79A (p_val_adj ~e-229), MS4A1 (p_val_adj ~e-222)
 # 4: Dendritic cell? # LILRA4 (p_val_adj ~e-117)
-tmp <- as.integer(as.character(surt@meta.data[["seurat_clusters"]]))
-surt@meta.data[["cell_type"]] <- tmp
-surt@meta.data[["cell_type"]][surt@meta.data[["cell_type"]] == 0] <- "T"
-surt@meta.data[["cell_type"]][surt@meta.data[["cell_type"]] == 1] <- "Mono"
-surt@meta.data[["cell_type"]][surt@meta.data[["cell_type"]] == 2] <- "NK/NKT"
-surt@meta.data[["cell_type"]][surt@meta.data[["cell_type"]] == 3] <- "B"
-surt@meta.data[["cell_type"]][surt@meta.data[["cell_type"]] == 4] <- "DC"
+tmp <- as.integer(as.character(surt$seurat_clusters))
+surt$cell_type <- tmp
+surt$cell_type[surt$cell_type == 0] <- "T"
+surt$cell_type[surt$cell_type == 1] <- "Mono"
+surt$cell_type[surt$cell_type == 2] <- "NK/NKT"
+surt$cell_type[surt$cell_type == 3] <- "B"
+surt$cell_type[surt$cell_type == 4] <- "DC"
 # Save data.
 saveRDS(surt, file = "backup/21_004_pbmc1500_seurat.rds")
 # Load data.
@@ -2146,7 +2146,7 @@ surt <- Seurat::RunTSNE(surt, dims.use = seq_len(2), reduction = "pca",
                         dims = seq_len(pc), do.fast = FALSE, perplexity = 30)
 # Show the clustering results.
 title <- "PBMC 1000 cells (Seurat)"
-labels <- surt@meta.data[["seurat_clusters"]]
+labels <- surt$seurat_clusters
 df <- surt@reductions[["tsne"]]@cell.embeddings
 p <- ggplot2::ggplot() +
   ggplot2::geom_point(ggplot2::aes(x = df[, 1], y = df[, 2], color = labels),
@@ -2168,13 +2168,13 @@ View(surt@misc$stat[which(surt@misc$stat$p_val_adj < 10^(-100)), ])
 # 2: NK/NKT          # GZMA (p_val_adj ~e-127), NKG7 (p_val_adj ~e-121)
 # 3: B cell          # MS4A1 (p_val_adj ~e-155), CD79A (p_val_adj ~e-154)
 # 4: Dendritic cell  # FCER1A (p_val_adj ~e-102)
-tmp <- as.integer(as.character(surt@meta.data[["seurat_clusters"]]))
-surt@meta.data[["cell_type"]] <- tmp
-surt@meta.data[["cell_type"]][surt@meta.data[["cell_type"]] == 0] <- "Unspecified"
-surt@meta.data[["cell_type"]][surt@meta.data[["cell_type"]] == 1] <- "Mono"
-surt@meta.data[["cell_type"]][surt@meta.data[["cell_type"]] == 2] <- "NK/NKT"
-surt@meta.data[["cell_type"]][surt@meta.data[["cell_type"]] == 3] <- "B"
-surt@meta.data[["cell_type"]][surt@meta.data[["cell_type"]] == 4] <- "DC"
+tmp <- as.integer(as.character(surt$seurat_clusters))
+surt$cell_type <- tmp
+surt$cell_type[surt$cell_type == 0] <- "Unspecified"
+surt$cell_type[surt$cell_type == 1] <- "Mono"
+surt$cell_type[surt$cell_type == 2] <- "NK/NKT"
+surt$cell_type[surt$cell_type == 3] <- "B"
+surt$cell_type[surt$cell_type == 4] <- "DC"
 # Save data.
 saveRDS(surt, file = "backup/21_005_pbmc1000_seurat.rds")
 # Load data.
@@ -2342,7 +2342,7 @@ surt <- Seurat::RunTSNE(surt, dims.use = seq_len(2), reduction = "pca",
                         dims = seq_len(pc), do.fast = FALSE, perplexity = 30)
 # Show the clustering results.
 title <- "PBMC 4000 cells (Seurat)"
-labels <- surt@meta.data[["seurat_clusters"]]
+labels <- surt$seurat_clusters
 df <- surt@reductions[["tsne"]]@cell.embeddings
 p <- ggplot2::ggplot() +
   ggplot2::geom_point(ggplot2::aes(x = df[, 1], y = df[, 2], color = labels),
@@ -2364,13 +2364,13 @@ View(surt@misc$stat[which(surt@misc$stat$p_val_adj < 10^(-100)), ])
 # 2: NK/NKT          # NKG7 (p_val_adj ~0), GZMA (p_val_adj ~0)
 # 3: B cell          # CD79A (p_val_adj ~0), CD79B (p_val_adj ~0)
 # 4: Dendritic cell  # LILRA4 (p_val_adj ~e-273), LILRB4 (p_val_adj ~e-116)
-tmp <- as.integer(as.character(surt@meta.data[["seurat_clusters"]]))
-surt@meta.data[["cell_type"]] <- tmp
-surt@meta.data[["cell_type"]][surt@meta.data[["cell_type"]] == 0] <- "T"
-surt@meta.data[["cell_type"]][surt@meta.data[["cell_type"]] == 1] <- "Mono"
-surt@meta.data[["cell_type"]][surt@meta.data[["cell_type"]] == 2] <- "NK/NKT"
-surt@meta.data[["cell_type"]][surt@meta.data[["cell_type"]] == 3] <- "B"
-surt@meta.data[["cell_type"]][surt@meta.data[["cell_type"]] == 4] <- "DC"
+tmp <- as.integer(as.character(surt$seurat_clusters))
+surt$cell_type <- tmp
+surt$cell_type[surt$cell_type == 0] <- "T"
+surt$cell_type[surt$cell_type == 1] <- "Mono"
+surt$cell_type[surt$cell_type == 2] <- "NK/NKT"
+surt$cell_type[surt$cell_type == 3] <- "B"
+surt$cell_type[surt$cell_type == 4] <- "DC"
 # Save data.
 saveRDS(surt, file = "backup/22_001_pbmc4000_seurat.rds")
 # Load data.
@@ -2509,7 +2509,7 @@ surt <- Seurat::RunTSNE(surt, dims.use = seq_len(2), reduction = "pca",
                         dims = seq_len(pc), do.fast = FALSE, perplexity = 30)
 # Show the clustering results.
 title <- "PBMC 3000 cells (Seurat)"
-labels <- surt@meta.data[["seurat_clusters"]]
+labels <- surt$seurat_clusters
 df <- surt@reductions[["tsne"]]@cell.embeddings
 p <- ggplot2::ggplot() +
   ggplot2::geom_point(ggplot2::aes(x = df[, 1], y = df[, 2], color = labels),
@@ -2531,13 +2531,13 @@ View(surt@misc$stat[which(surt@misc$stat$p_val_adj < 10^(-100)), ])
 # 2: NK/NKT          # GZMA (p_val_adj ~0), NKG7 (p_val_adj ~0)
 # 3: B cell          # CD79A (p_val_adj ~0), CD79B (p_val_adj ~0)
 # 4: Dendritic cell  # LILRA4 (p_val_adj ~e-198)
-tmp <- as.integer(as.character(surt@meta.data[["seurat_clusters"]]))
-surt@meta.data[["cell_type"]] <- tmp
-surt@meta.data[["cell_type"]][surt@meta.data[["cell_type"]] == 0] <- "T"
-surt@meta.data[["cell_type"]][surt@meta.data[["cell_type"]] == 1] <- "Mono"
-surt@meta.data[["cell_type"]][surt@meta.data[["cell_type"]] == 2] <- "NK/NKT"
-surt@meta.data[["cell_type"]][surt@meta.data[["cell_type"]] == 3] <- "B"
-surt@meta.data[["cell_type"]][surt@meta.data[["cell_type"]] == 4] <- "DC"
+tmp <- as.integer(as.character(surt$seurat_clusters))
+surt$cell_type <- tmp
+surt$cell_type[surt$cell_type == 0] <- "T"
+surt$cell_type[surt$cell_type == 1] <- "Mono"
+surt$cell_type[surt$cell_type == 2] <- "NK/NKT"
+surt$cell_type[surt$cell_type == 3] <- "B"
+surt$cell_type[surt$cell_type == 4] <- "DC"
 # Save data.
 saveRDS(surt, file = "backup/22_002_pbmc3000_seurat.rds")
 # Load data.
@@ -2676,7 +2676,7 @@ surt <- Seurat::RunTSNE(surt, dims.use = seq_len(2), reduction = "pca",
                         dims = seq_len(pc), do.fast = FALSE, perplexity = 30)
 # Show the clustering results.
 title <- "PBMC 2000 cells (Seurat)"
-labels <- surt@meta.data[["seurat_clusters"]]
+labels <- surt$seurat_clusters
 df <- surt@reductions[["tsne"]]@cell.embeddings
 p <- ggplot2::ggplot() +
   ggplot2::geom_point(ggplot2::aes(x = df[, 1], y = df[, 2], color = labels),
@@ -2698,13 +2698,13 @@ View(surt@misc$stat[which(surt@misc$stat$p_val_adj < 10^(-100)), ])
 # 2: Monocyte        # MNDA (p_val_adj ~0), FCN1 (p_val_adj ~e-301)
 # 3: B cell          # CD79A (p_val_adj ~0), MS4A1 (p_val_adj ~0)
 # 4: Dendritic cell? # LILRA4 (p_val_adj ~e-120)
-tmp <- as.integer(as.character(surt@meta.data[["seurat_clusters"]]))
-surt@meta.data[["cell_type"]] <- tmp
-surt@meta.data[["cell_type"]][surt@meta.data[["cell_type"]] == 0] <- "T"
-surt@meta.data[["cell_type"]][surt@meta.data[["cell_type"]] == 1] <- "NK/NKT"
-surt@meta.data[["cell_type"]][surt@meta.data[["cell_type"]] == 2] <- "Mono"
-surt@meta.data[["cell_type"]][surt@meta.data[["cell_type"]] == 3] <- "B"
-surt@meta.data[["cell_type"]][surt@meta.data[["cell_type"]] == 4] <- "DC"
+tmp <- as.integer(as.character(surt$seurat_clusters))
+surt$cell_type <- tmp
+surt$cell_type[surt$cell_type == 0] <- "T"
+surt$cell_type[surt$cell_type == 1] <- "NK/NKT"
+surt$cell_type[surt$cell_type == 2] <- "Mono"
+surt$cell_type[surt$cell_type == 3] <- "B"
+surt$cell_type[surt$cell_type == 4] <- "DC"
 # Save data.
 saveRDS(surt, file = "backup/22_003_pbmc2000_seurat.rds")
 # Load data.
@@ -2837,7 +2837,7 @@ surt <- Seurat::RunTSNE(surt, dims.use = seq_len(2), reduction = "pca",
                         dims = seq_len(pc), do.fast = FALSE, perplexity = 30)
 # Show the clustering results.
 title <- "PBMC 1500 cells (Seurat)"
-labels <- surt@meta.data[["seurat_clusters"]]
+labels <- surt$seurat_clusters
 df <- surt@reductions[["tsne"]]@cell.embeddings
 p <- ggplot2::ggplot() +
   ggplot2::geom_point(ggplot2::aes(x = df[, 1], y = df[, 2], color = labels),
@@ -2859,13 +2859,13 @@ View(surt@misc$stat[which(surt@misc$stat$p_val_adj < 10^(-100)), ])
 # 2: NK/NKT          # GZMA (p_val_adj ~e-178), NKG7 (p_val_adj ~e-168)
 # 3: B cell          # CD79A (p_val_adj ~e-231), MS4A1 (p_val_adj ~e-222)
 # 4: Dendritic cell? # LILRA4 (p_val_adj ~e-150)
-tmp <- as.integer(as.character(surt@meta.data[["seurat_clusters"]]))
-surt@meta.data[["cell_type"]] <- tmp
-surt@meta.data[["cell_type"]][surt@meta.data[["cell_type"]] == 0] <- "T"
-surt@meta.data[["cell_type"]][surt@meta.data[["cell_type"]] == 1] <- "Mono"
-surt@meta.data[["cell_type"]][surt@meta.data[["cell_type"]] == 2] <- "NK/NKT"
-surt@meta.data[["cell_type"]][surt@meta.data[["cell_type"]] == 3] <- "B"
-surt@meta.data[["cell_type"]][surt@meta.data[["cell_type"]] == 4] <- "DC"
+tmp <- as.integer(as.character(surt$seurat_clusters))
+surt$cell_type <- tmp
+surt$cell_type[surt$cell_type == 0] <- "T"
+surt$cell_type[surt$cell_type == 1] <- "Mono"
+surt$cell_type[surt$cell_type == 2] <- "NK/NKT"
+surt$cell_type[surt$cell_type == 3] <- "B"
+surt$cell_type[surt$cell_type == 4] <- "DC"
 # Save data.
 saveRDS(surt, file = "backup/22_004_pbmc1500_seurat.rds")
 # Load data.
@@ -3002,7 +3002,7 @@ surt <- Seurat::RunTSNE(surt, dims.use = seq_len(2), reduction = "pca",
                         dims = seq_len(pc), do.fast = FALSE, perplexity = 30)
 # Show the clustering results.
 title <- "PBMC 1000 cells (Seurat)"
-labels <- surt@meta.data[["seurat_clusters"]]
+labels <- surt$seurat_clusters
 df <- surt@reductions[["tsne"]]@cell.embeddings
 p <- ggplot2::ggplot() +
   ggplot2::geom_point(ggplot2::aes(x = df[, 1], y = df[, 2], color = labels),
@@ -3023,12 +3023,12 @@ View(surt@misc$stat[which(surt@misc$stat$p_val_adj < 10^(-100)), ])
 # 1: Monocyte        # MNDA (p_val_adj ~e-164), FCN1 (p_val_adj ~e-141)
 # 2: NK/NKT          # GZMA (p_val_adj ~e-127), NKG7 (p_val_adj ~e-121)
 # 3: B cell          # CD79A (p_val_adj ~e-152), MS4A1 (p_val_adj ~e-148)
-tmp <- as.integer(as.character(surt@meta.data[["seurat_clusters"]]))
-surt@meta.data[["cell_type"]] <- tmp
-surt@meta.data[["cell_type"]][surt@meta.data[["cell_type"]] == 0] <- "Unspecified"
-surt@meta.data[["cell_type"]][surt@meta.data[["cell_type"]] == 1] <- "Mono"
-surt@meta.data[["cell_type"]][surt@meta.data[["cell_type"]] == 2] <- "NK/NKT"
-surt@meta.data[["cell_type"]][surt@meta.data[["cell_type"]] == 3] <- "B"
+tmp <- as.integer(as.character(surt$seurat_clusters))
+surt$cell_type <- tmp
+surt$cell_type[surt$cell_type == 0] <- "Unspecified"
+surt$cell_type[surt$cell_type == 1] <- "Mono"
+surt$cell_type[surt$cell_type == 2] <- "NK/NKT"
+surt$cell_type[surt$cell_type == 3] <- "B"
 # Save data.
 saveRDS(surt, file = "backup/22_005_pbmc1000_seurat.rds")
 # Load data.

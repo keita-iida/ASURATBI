@@ -12,7 +12,7 @@
 
 <meta name="author" content="Keita Iida" />
 
-<meta name="date" content="2022-07-02" />
+<meta name="date" content="2022-07-06" />
 
 <title>Analysis of 10x PBMC 6k dataset</title>
 
@@ -334,7 +334,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">Analysis of 10x PBMC 6k dataset</h1>
 <h4 class="author">Keita Iida</h4>
-<h4 class="date">2022-07-02</h4>
+<h4 class="date">2022-07-06</h4>
 
 
 <div id="TOC">
@@ -1204,7 +1204,7 @@ determining the number of the principal components (PCs).</p>
 <span id="cb66-9"><a href="#cb66-9" aria-hidden="true" tabindex="-1"></a>pbmc <span class="ot">&lt;-</span> Seurat<span class="sc">::</span><span class="fu">RunUMAP</span>(pbmc, <span class="at">dims =</span> <span class="fu">seq_len</span>(pc))</span></code></pre></div>
 <p>Show the clustering results.</p>
 <div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>title <span class="ot">&lt;-</span> <span class="st">&quot;PBMC 6k (Seurat)&quot;</span></span>
-<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a>labels <span class="ot">&lt;-</span> pbmc<span class="sc">@</span>meta.data[[<span class="st">&quot;seurat_clusters&quot;</span>]]</span>
+<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a>labels <span class="ot">&lt;-</span> pbmc<span class="sc">$</span>seurat_clusters</span>
 <span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> pbmc<span class="sc">@</span>reductions[[<span class="st">&quot;umap&quot;</span>]]<span class="sc">@</span>cell.embeddings</span>
 <span id="cb67-4"><a href="#cb67-4" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> ggplot2<span class="sc">::</span><span class="fu">ggplot</span>() <span class="sc">+</span></span>
 <span id="cb67-5"><a href="#cb67-5" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_point</span>(ggplot2<span class="sc">::</span><span class="fu">aes</span>(<span class="at">x =</span> df[, <span class="dv">1</span>], <span class="at">y =</span> df[, <span class="dv">2</span>], <span class="at">color =</span> labels),</span>
@@ -1238,16 +1238,16 @@ types using <a href="https://www.genecards.org/">GeneCards</a>.</p>
 2: NK/NKT        # NKG7 (p_val_adj ~0), GZMA (p_val_adj ~0)
 3: B cell        # CD79A (p_val_adj ~0), CD79B (p_val_adj ~0)
 4: Megakaryocyte # PPBP (p_val_adj ~e-220), GZMB (p_val_adj ~e-285)</code></pre>
-<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(<span class="fu">as.character</span>(pbmc<span class="sc">@</span>meta.data[[<span class="st">&quot;seurat_clusters&quot;</span>]]))</span>
-<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a>pbmc<span class="sc">@</span>meta.data[[<span class="st">&quot;cell_type&quot;</span>]] <span class="ot">&lt;-</span> tmp</span>
-<span id="cb70-3"><a href="#cb70-3" aria-hidden="true" tabindex="-1"></a>pbmc<span class="sc">@</span>meta.data[[<span class="st">&quot;cell_type&quot;</span>]][pbmc<span class="sc">@</span>meta.data[[<span class="st">&quot;cell_type&quot;</span>]] <span class="sc">==</span> <span class="dv">0</span>] <span class="ot">&lt;-</span> <span class="st">&quot;T&quot;</span></span>
-<span id="cb70-4"><a href="#cb70-4" aria-hidden="true" tabindex="-1"></a>pbmc<span class="sc">@</span>meta.data[[<span class="st">&quot;cell_type&quot;</span>]][pbmc<span class="sc">@</span>meta.data[[<span class="st">&quot;cell_type&quot;</span>]] <span class="sc">==</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="st">&quot;Mono&quot;</span></span>
-<span id="cb70-5"><a href="#cb70-5" aria-hidden="true" tabindex="-1"></a>pbmc<span class="sc">@</span>meta.data[[<span class="st">&quot;cell_type&quot;</span>]][pbmc<span class="sc">@</span>meta.data[[<span class="st">&quot;cell_type&quot;</span>]] <span class="sc">==</span> <span class="dv">2</span>] <span class="ot">&lt;-</span> <span class="st">&quot;NK/NKT&quot;</span></span>
-<span id="cb70-6"><a href="#cb70-6" aria-hidden="true" tabindex="-1"></a>pbmc<span class="sc">@</span>meta.data[[<span class="st">&quot;cell_type&quot;</span>]][pbmc<span class="sc">@</span>meta.data[[<span class="st">&quot;cell_type&quot;</span>]] <span class="sc">==</span> <span class="dv">3</span>] <span class="ot">&lt;-</span> <span class="st">&quot;B&quot;</span></span>
-<span id="cb70-7"><a href="#cb70-7" aria-hidden="true" tabindex="-1"></a>pbmc<span class="sc">@</span>meta.data[[<span class="st">&quot;cell_type&quot;</span>]][pbmc<span class="sc">@</span>meta.data[[<span class="st">&quot;cell_type&quot;</span>]] <span class="sc">==</span> <span class="dv">4</span>] <span class="ot">&lt;-</span> <span class="st">&quot;Megakaryocyte&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(<span class="fu">as.character</span>(pbmc<span class="sc">$</span>seurat_clusters))</span>
+<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a>pbmc<span class="sc">$</span>cell_type <span class="ot">&lt;-</span> tmp</span>
+<span id="cb70-3"><a href="#cb70-3" aria-hidden="true" tabindex="-1"></a>pbmc<span class="sc">$</span>cell_type[pbmc<span class="sc">$</span>cell_type <span class="sc">==</span> <span class="dv">0</span>] <span class="ot">&lt;-</span> <span class="st">&quot;T&quot;</span></span>
+<span id="cb70-4"><a href="#cb70-4" aria-hidden="true" tabindex="-1"></a>pbmc<span class="sc">$</span>cell_type[pbmc<span class="sc">$</span>cell_type <span class="sc">==</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="st">&quot;Mono&quot;</span></span>
+<span id="cb70-5"><a href="#cb70-5" aria-hidden="true" tabindex="-1"></a>pbmc<span class="sc">$</span>cell_type[pbmc<span class="sc">$</span>cell_type <span class="sc">==</span> <span class="dv">2</span>] <span class="ot">&lt;-</span> <span class="st">&quot;NK/NKT&quot;</span></span>
+<span id="cb70-6"><a href="#cb70-6" aria-hidden="true" tabindex="-1"></a>pbmc<span class="sc">$</span>cell_type[pbmc<span class="sc">$</span>cell_type <span class="sc">==</span> <span class="dv">3</span>] <span class="ot">&lt;-</span> <span class="st">&quot;B&quot;</span></span>
+<span id="cb70-7"><a href="#cb70-7" aria-hidden="true" tabindex="-1"></a>pbmc<span class="sc">$</span>cell_type[pbmc<span class="sc">$</span>cell_type <span class="sc">==</span> <span class="dv">4</span>] <span class="ot">&lt;-</span> <span class="st">&quot;Megakaryocyte&quot;</span></span></code></pre></div>
 <p>Show the annotation results in low-dimensional spaces.</p>
 <div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>title <span class="ot">&lt;-</span> <span class="st">&quot;PBMC 6k (Seurat)&quot;</span></span>
-<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a>labels <span class="ot">&lt;-</span> <span class="fu">factor</span>(pbmc<span class="sc">@</span>meta.data[[<span class="st">&quot;cell_type&quot;</span>]],</span>
+<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a>labels <span class="ot">&lt;-</span> <span class="fu">factor</span>(pbmc<span class="sc">$</span>cell_type,</span>
 <span id="cb71-3"><a href="#cb71-3" aria-hidden="true" tabindex="-1"></a>                 <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;T&quot;</span>, <span class="st">&quot;Mono&quot;</span>, <span class="st">&quot;NK/NKT&quot;</span>, <span class="st">&quot;B&quot;</span>, <span class="st">&quot;Megakaryocyte&quot;</span>))</span>
 <span id="cb71-4"><a href="#cb71-4" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> pbmc<span class="sc">@</span>reductions[[<span class="st">&quot;umap&quot;</span>]]<span class="sc">@</span>cell.embeddings</span>
 <span id="cb71-5"><a href="#cb71-5" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> ggplot2<span class="sc">::</span><span class="fu">ggplot</span>() <span class="sc">+</span></span>
@@ -1277,12 +1277,11 @@ using Seurat and scCATCH</h3>
 <p>Load Seurat computational results.</p>
 <div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a>pbmc <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">&quot;backup/05_021_pbmc6k_seurat.rds&quot;</span>)</span></code></pre></div>
 <p>Create scCATCH objects.</p>
-<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a>mat <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(pbmc<span class="sc">@</span>assays[[<span class="st">&quot;RNA&quot;</span>]]<span class="sc">@</span>data)</span>
+<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a>mat <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(Seurat<span class="sc">::</span><span class="fu">GetAssayData</span>(<span class="at">object =</span> pbmc, <span class="at">slot =</span> <span class="st">&quot;data&quot;</span>))</span>
 <span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a>mat <span class="ot">&lt;-</span> scCATCH<span class="sc">::</span><span class="fu">rev_gene</span>(<span class="at">data =</span> mat, <span class="at">data_type =</span> <span class="st">&quot;data&quot;</span>, <span class="at">species =</span> <span class="st">&quot;Human&quot;</span>,</span>
 <span id="cb76-3"><a href="#cb76-3" aria-hidden="true" tabindex="-1"></a>                         <span class="at">geneinfo =</span> scCATCH<span class="sc">::</span>geneinfo)</span>
-<span id="cb76-4"><a href="#cb76-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb76-5"><a href="#cb76-5" aria-hidden="true" tabindex="-1"></a>labels <span class="ot">&lt;-</span> <span class="fu">as.character</span>(pbmc<span class="sc">@</span>meta.data[[<span class="st">&quot;seurat_clusters&quot;</span>]])</span>
-<span id="cb76-6"><a href="#cb76-6" aria-hidden="true" tabindex="-1"></a>scc <span class="ot">&lt;-</span> scCATCH<span class="sc">::</span><span class="fu">createscCATCH</span>(<span class="at">data =</span> mat, <span class="at">cluster =</span> labels)</span></code></pre></div>
+<span id="cb76-4"><a href="#cb76-4" aria-hidden="true" tabindex="-1"></a>labels <span class="ot">&lt;-</span> <span class="fu">as.character</span>(pbmc<span class="sc">$</span>seurat_clusters)</span>
+<span id="cb76-5"><a href="#cb76-5" aria-hidden="true" tabindex="-1"></a>scc <span class="ot">&lt;-</span> scCATCH<span class="sc">::</span><span class="fu">createscCATCH</span>(<span class="at">data =</span> mat, <span class="at">cluster =</span> labels)</span></code></pre></div>
 <p>Perform <code>findmarkergenes()</code> and
 <code>findcelltype()</code>.</p>
 <div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a>scc <span class="ot">&lt;-</span> scCATCH<span class="sc">::</span><span class="fu">findmarkergene</span>(<span class="at">object =</span> scc, <span class="at">species =</span> <span class="st">&quot;Human&quot;</span>,</span>
@@ -1375,7 +1374,7 @@ Manifold Approximation and Projection.</p>
 <span id="cb88-7"><a href="#cb88-7" aria-hidden="true" tabindex="-1"></a>pbmc <span class="ot">&lt;-</span> Seurat<span class="sc">::</span><span class="fu">AddMetaData</span>(pbmc, <span class="at">metadata =</span> surt[[]]<span class="sc">$</span>seurat_clusters,</span>
 <span id="cb88-8"><a href="#cb88-8" aria-hidden="true" tabindex="-1"></a>                            <span class="at">col.name =</span> <span class="st">&quot;ssgsea_clusters&quot;</span>)</span></code></pre></div>
 <p>Show the clustering results in low-dimensional spaces.</p>
-<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a>labels <span class="ot">&lt;-</span> pbmc<span class="sc">@</span>meta.data[[<span class="st">&quot;ssgsea_clusters&quot;</span>]]</span>
+<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a>labels <span class="ot">&lt;-</span> pbmc<span class="sc">$</span>ssgsea_clusters</span>
 <span id="cb89-2"><a href="#cb89-2" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(pbmc<span class="sc">@</span>reductions[[<span class="st">&quot;umap_ssgsea&quot;</span>]])</span>
 <span id="cb89-3"><a href="#cb89-3" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> ggplot2<span class="sc">::</span><span class="fu">ggplot</span>() <span class="sc">+</span></span>
 <span id="cb89-4"><a href="#cb89-4" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_point</span>(ggplot2<span class="sc">::</span><span class="fu">aes</span>(<span class="at">x =</span> df[, <span class="dv">1</span>], <span class="at">y =</span> df[, <span class="dv">2</span>], <span class="at">color =</span> labels),</span>
@@ -1404,7 +1403,7 @@ using Seurat and ssGSEA</h3>
 <p>Investigate “significant” modules for Seurat clustering results.</p>
 <div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
 <span id="cb92-2"><a href="#cb92-2" aria-hidden="true" tabindex="-1"></a>surt <span class="ot">&lt;-</span> Seurat<span class="sc">::</span><span class="fu">CreateSeuratObject</span>(<span class="at">counts =</span> <span class="fu">t</span>(pbmc<span class="sc">@</span>misc[[<span class="st">&quot;enrichIt&quot;</span>]]))</span>
-<span id="cb92-3"><a href="#cb92-3" aria-hidden="true" tabindex="-1"></a>surt <span class="ot">&lt;-</span> Seurat<span class="sc">::</span><span class="fu">AddMetaData</span>(surt, <span class="at">metadata =</span> pbmc<span class="sc">@</span>meta.data[[<span class="st">&quot;cell_type&quot;</span>]],</span>
+<span id="cb92-3"><a href="#cb92-3" aria-hidden="true" tabindex="-1"></a>surt <span class="ot">&lt;-</span> Seurat<span class="sc">::</span><span class="fu">AddMetaData</span>(surt, <span class="at">metadata =</span> pbmc<span class="sc">$</span>cell_type,</span>
 <span id="cb92-4"><a href="#cb92-4" aria-hidden="true" tabindex="-1"></a>                            <span class="at">col.name =</span> <span class="st">&quot;seurat_cell_type&quot;</span>)</span>
 <span id="cb92-5"><a href="#cb92-5" aria-hidden="true" tabindex="-1"></a>surt <span class="ot">&lt;-</span> Seurat<span class="sc">::</span><span class="fu">SetIdent</span>(surt, <span class="at">value =</span> <span class="st">&quot;seurat_cell_type&quot;</span>)</span>
 <span id="cb92-6"><a href="#cb92-6" aria-hidden="true" tabindex="-1"></a>res <span class="ot">&lt;-</span> Seurat<span class="sc">::</span><span class="fu">FindAllMarkers</span>(surt, <span class="at">only.pos =</span> <span class="cn">TRUE</span>,</span>
@@ -1414,7 +1413,7 @@ using Seurat and ssGSEA</h3>
 <p>Show violin plots for ssGSEA score distributions for Seurat
 annotation results.</p>
 <div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a>lvs <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;T&quot;</span>, <span class="st">&quot;Mono&quot;</span>, <span class="st">&quot;NK/NKT&quot;</span>, <span class="st">&quot;B&quot;</span>, <span class="st">&quot;Megakaryocyte&quot;</span>)</span>
-<span id="cb93-2"><a href="#cb93-2" aria-hidden="true" tabindex="-1"></a>labels <span class="ot">&lt;-</span> <span class="fu">factor</span>(pbmc<span class="sc">@</span>meta.data[[<span class="st">&quot;cell_type&quot;</span>]], <span class="at">levels =</span> lvs)</span>
+<span id="cb93-2"><a href="#cb93-2" aria-hidden="true" tabindex="-1"></a>labels <span class="ot">&lt;-</span> <span class="fu">factor</span>(pbmc<span class="sc">$</span>cell_type, <span class="at">levels =</span> lvs)</span>
 <span id="cb93-3"><a href="#cb93-3" aria-hidden="true" tabindex="-1"></a>descriptions <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">gsub</span>(<span class="st">&quot;-&quot;</span>, <span class="st">&quot;_&quot;</span>, <span class="st">&quot;DURANTE-ADULT-OLFACTORY-NEUROEPITHELIUM-CD4-T-CELLS&quot;</span>),</span>
 <span id="cb93-4"><a href="#cb93-4" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">gsub</span>(<span class="st">&quot;-&quot;</span>, <span class="st">&quot;_&quot;</span>, <span class="st">&quot;DURANTE-ADULT-OLFACTORY-NEUROEPITHELIUM-MACROPHAGES&quot;</span>),</span>
 <span id="cb93-5"><a href="#cb93-5" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">gsub</span>(<span class="st">&quot;-&quot;</span>, <span class="st">&quot;_&quot;</span>, <span class="st">&quot;TRAVAGLINI-LUNG-NATURAL-KILLER-T-CELL&quot;</span>),</span>
