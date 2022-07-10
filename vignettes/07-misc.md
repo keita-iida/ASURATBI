@@ -1,7 +1,7 @@
 Miscellaneous
 ================
 Keita Iida
-2022-07-06
+2022-07-10
 
 -   [1 Computational environment](#1-computational-environment)
 -   [2 Install libraries](#2-install-libraries)
@@ -190,7 +190,7 @@ qgraph::qgraph(input = cmat, title = title, title.cex = 0.3, filename = filename
 ```
 
 where the average correlation coefficients of SCG, VCG, and WCG are
-0.3389764, -0.2280671, and 0.011150431, respectively.
+0.3389764, 0.2280671, and 0.011150431, respectively.
 
 <img src="figures/figure_90_0001.png" width="300px">
 
