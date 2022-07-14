@@ -1777,7 +1777,7 @@ View(surt@misc$stat[which(surt@misc$stat$p_val_adj < 10^(-100)), ])
 <br>
 
 ### Infer cell states
-Defining significant genes as genes with FDR<1e-100, infer cell states
+Defining significant genes as genes with p_val_adj<1e-100, infer cell states
 using [GeneCards](https://www.genecards.org/).
 ```
 0: Cancer           # TM4SF4 (p_val_adj ~e-165), CEACAM6 (p_val_adj ~e-155),

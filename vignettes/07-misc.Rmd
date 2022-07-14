@@ -179,10 +179,13 @@ label[which(goi_all %in% goi_strg)] <- 1
 label[which(goi_all %in% goi_vari)] <- 2
 label[which(goi_all %in% goi_weak)] <- 3
 colors <- label
-colors[which(colors == 1)] <- "grey60"
-colors[which(colors == 2)] <- "grey80"
+colors[which(colors == 1)] <- "grey20"
+colors[which(colors == 2)] <- "grey70"
 colors[which(colors == 3)] <- "white"
-text_colors <- "black"
+text_colors <- label
+text_colors[which(text_colors == "1")] <- "white"
+text_colors[which(text_colors == "2")] <- "black"
+text_colors[which(text_colors == "3")] <- "black"
 node_sizes <- 9
 
 title <- "GO:0070371 (ERK1 and ERK2 cascade)"

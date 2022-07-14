@@ -1,7 +1,7 @@
 Analysis of PDAC datasets (Moncada et al., 2020)
 ================
 Keita Iida
-2022-07-06
+2022-07-14
 
 -   [1 Computational environment](#1-computational-environment)
 -   [2 Install libraries](#2-install-libraries)
@@ -1670,8 +1670,8 @@ View(surt@misc$stat[which(surt@misc$stat$p_val_adj < 10^(-100)), ])
 
 ### 7.1.5 Infer cell states
 
-Defining significant genes as genes with FDR\<1e-100, infer cell states
-using [GeneCards](https://www.genecards.org/).
+Defining significant genes as genes with p_val_adj\<1e-100, infer cell
+states using [GeneCards](https://www.genecards.org/).
 
     0: Cancer           # TM4SF4 (p_val_adj ~e-165), CEACAM6 (p_val_adj ~e-155),
                         # SPP1 (p_val_adj ~e-106)
