@@ -5,10 +5,6 @@
 .RDataTmp
 ASURATBI.Rproj
 backup
-#figures
-#figures_pbmc4k_cell
-#figures_pdac_function
-#figures_pdac_pathway
 rawdata
 .DS_Store
 

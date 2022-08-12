@@ -17,6 +17,7 @@ LazyData: TRUE
 Depends:
     R (>= 4.0.0)
 Imports:
+    ASURAT,
     SingleCellExperiment,
     SummarizedExperiment,
     S4Vectors,
@@ -46,7 +47,7 @@ Suggests:
     escape,
     scran,
     scater,
-    Monocle3,
+    monocle3,
     SC3,
     viridis,
     AnnotationDbi,
@@ -56,6 +57,7 @@ Suggests:
     knitr,
     rmarkdown,
     testthat (>= 3.0.0)
-RoxygenNote: 7.2.0
+RoxygenNote: 7.2.1
 LinkingTo:
     Rcpp
+Config/testthat/edition: 3

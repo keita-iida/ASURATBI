@@ -219,10 +219,10 @@ plot_pseudotimecourse_wTree <- function(
     ggplot2::geom_point(ggplot2::aes(x = dg[,1], y = dg[,2]),
                         color = "black", size = 5, alpha = 1)
   for(i in seq_along(dh)){
-    p <- p + ggplot2::geom_line(ggplot2::aes_string(x = dh[[i]][, 1],
-                                                    y = dh[[i]][, 2],
-                                                    color = as.factor(dh[[i]]$color)),
-                                size = 2, alpha = 1)
+    p <- p + ggplot2::geom_line(
+      ggplot2::aes_string(x = dh[[i]][, 1], y = dh[[i]][, 2],
+                          color = as.factor(dh[[i]]$color)),
+      size = 2, alpha = 1)
   }
 
   return(p)
