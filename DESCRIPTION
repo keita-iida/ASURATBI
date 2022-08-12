@@ -56,6 +56,6 @@ Suggests:
     knitr,
     rmarkdown,
     testthat (>= 3.0.0)
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.0
 LinkingTo:
     Rcpp
