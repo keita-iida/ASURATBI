@@ -1,7 +1,7 @@
 Analysis of small cell lung cancer dataset
 ================
 Keita Iida
-2022-07-14
+2022-08-17
 
 -   [1 Computational environment](#1-computational-environment)
 -   [2 Install libraries](#2-install-libraries)
@@ -175,6 +175,8 @@ dev.off()
 # p
 # dev.off()
 ```
+
+<img src="figures/figure_01_0005.png" width="400px">
 
 <br>
 
