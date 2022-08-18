@@ -14,8 +14,8 @@ Below are documents for analyzing several single-cell and spatial transcriptome 
 
 Below are supporting information:
 
-* [Computations for PBMCs datasets](https://keita-iida.github.io/ASURATBI/06-pbmcs.html), including parameter search method.
-* [Miscellaneous](https://keita-iida.github.io/ASURATBI/07-misc.html)
+* [Computations for PBMCs datasets](https://keita-iida.github.io/ASURATBI/06-pbmcs.html) (parameter search, benchmark tests, etc.)
+* [Miscellaneous](https://keita-iida.github.io/ASURATBI/07-misc.html) (separation index, correlation analysis, etc.)
 
 
 
