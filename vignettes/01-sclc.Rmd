@@ -890,7 +890,7 @@ plot_multiheatmaps(ssm_list = ssm_list, gem_list = gem_list,
 dev.off()
 ```
 
-<img src="figures/figure_04_0040.png" width="400px">
+<img src="figures/figure_01_0040.png" width="400px">
 
 Show violin plots for the sign score distributions across cell type-related
 clusters.

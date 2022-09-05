@@ -1021,7 +1021,7 @@ for(i in seq_along(pdacs)){
   marker_signs[[i]] <- dplyr::slice_min(marker_signs[[i]], Rank, n = 1)
 }
 # Significant genes
-marker_genes_CB <- metadata(pdacs$GO)$marker_genes$all
+marker_genes_CB <- metadata(pdacs$CB)$marker_genes$all
 marker_genes_CB <- dplyr::group_by(marker_genes_CB, cluster)
 marker_genes_CB <- dplyr::slice_min(marker_genes_CB, p_val_adj, n = 2)
 marker_genes_CB <- dplyr::slice_max(marker_genes_CB, avg_log2FC, n = 2)

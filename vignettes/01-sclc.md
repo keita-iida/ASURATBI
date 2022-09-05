@@ -1,36 +1,53 @@
 Analysis of small cell lung cancer dataset
 ================
 Keita Iida
-2022-08-17
+2022-09-06
 
--   [1 Computational environment](#1-computational-environment)
--   [2 Install libraries](#2-install-libraries)
--   [3 Introduction](#3-introduction)
--   [4 Prepare scRNA-seq data](#4-prepare-scrna-seq-data)
-    -   [4.1 SCLC with cisplatin
-        treatment](#41-sclc-with-cisplatin-treatment)
--   [5 Preprocessing](#5-preprocessing)
-    -   [5.1 Control data quality](#51-control-data-quality)
-    -   [5.2 Normalize data](#normalization)
--   [6 Multifaceted sign analysis](#6-multifaceted-sign-analysis)
-    -   [6.1 Compute correlation
-        matrices](#61-compute-correlation-matrices)
-    -   [6.2 Load databases](#62-load-databases)
-    -   [6.3 Create signs](#63-create-signs)
-    -   [6.4 Select signs](#64-select-signs)
-    -   [6.5 Create sign-by-sample
-        matrices](#65-create-sign-by-sample-matrices)
-    -   [6.6 Reduce dimensions of sign-by-sample
-        matrices](#66-reduce-dimensions-of-sign-by-sample-matrices)
-    -   [6.7 Cluster cells](#67-cluster-cells)
-    -   [6.8 Investigate significant
-        signs](#68-investigate-significant-signs)
-    -   [6.9 Investigate significant
-        genes](#69-investigate-significant-genes)
-    -   [6.10 Multifaceted analysis](#610-multifaceted-analysis)
-    -   [6.11 Infer cell state](#611-infer-cell-state)
--   [7 Using the existing softwares](#7-using-the-existing-softwares)
-    -   [7.1 Seurat](#71-seurat)
+-   <a href="#1-computational-environment"
+    id="toc-1-computational-environment">1 Computational environment</a>
+-   <a href="#2-install-libraries" id="toc-2-install-libraries">2 Install
+    libraries</a>
+-   <a href="#3-introduction" id="toc-3-introduction">3 Introduction</a>
+-   <a href="#4-prepare-scrna-seq-data" id="toc-4-prepare-scrna-seq-data">4
+    Prepare scRNA-seq data</a>
+    -   <a href="#41-sclc-with-cisplatin-treatment"
+        id="toc-41-sclc-with-cisplatin-treatment">4.1 SCLC with cisplatin
+        treatment</a>
+-   <a href="#5-preprocessing" id="toc-5-preprocessing">5 Preprocessing</a>
+    -   <a href="#51-control-data-quality" id="toc-51-control-data-quality">5.1
+        Control data quality</a>
+    -   <a href="#normalization" id="toc-normalization">5.2 Normalize data</a>
+-   <a href="#6-multifaceted-sign-analysis"
+    id="toc-6-multifaceted-sign-analysis">6 Multifaceted sign analysis</a>
+    -   <a href="#61-compute-correlation-matrices"
+        id="toc-61-compute-correlation-matrices">6.1 Compute correlation
+        matrices</a>
+    -   <a href="#62-load-databases" id="toc-62-load-databases">6.2 Load
+        databases</a>
+    -   <a href="#63-create-signs" id="toc-63-create-signs">6.3 Create signs</a>
+    -   <a href="#64-select-signs" id="toc-64-select-signs">6.4 Select signs</a>
+    -   <a href="#65-create-sign-by-sample-matrices"
+        id="toc-65-create-sign-by-sample-matrices">6.5 Create sign-by-sample
+        matrices</a>
+    -   <a href="#66-reduce-dimensions-of-sign-by-sample-matrices"
+        id="toc-66-reduce-dimensions-of-sign-by-sample-matrices">6.6 Reduce
+        dimensions of sign-by-sample matrices</a>
+    -   <a href="#67-cluster-cells" id="toc-67-cluster-cells">6.7 Cluster
+        cells</a>
+    -   <a href="#68-investigate-significant-signs"
+        id="toc-68-investigate-significant-signs">6.8 Investigate significant
+        signs</a>
+    -   <a href="#69-investigate-significant-genes"
+        id="toc-69-investigate-significant-genes">6.9 Investigate significant
+        genes</a>
+    -   <a href="#610-multifaceted-analysis"
+        id="toc-610-multifaceted-analysis">6.10 Multifaceted analysis</a>
+    -   <a href="#611-infer-cell-state" id="toc-611-infer-cell-state">6.11 Infer
+        cell state</a>
+-   <a href="#7-using-the-existing-softwares"
+    id="toc-7-using-the-existing-softwares">7 Using the existing
+    softwares</a>
+    -   <a href="#71-seurat" id="toc-71-seurat">7.1 Seurat</a>
 
 # 1 Computational environment
 
@@ -871,11 +888,8 @@ label_CC$label <- factor(label_CC$label, levels = c("G1", "S", "G2M"))
 gemlabel_list <- list(CellCycle = label_CC)
 ```
 
-**Tips:** If one would like to omit some color labels (e.g., labels
-
-![\\\[3](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5C%5B3 "\[3")
-
-\]), set the argument as follows:
+**Tips:** If one would like to omit some color labels (e.g.,
+labels$$\[3$$\]), set the argument as follows:
 
 ``` r
 ssmlabel_list[[2]] <- data.frame(label = NA, color = NA)
@@ -896,7 +910,7 @@ plot_multiheatmaps(ssm_list = ssm_list, gem_list = gem_list,
 dev.off()
 ```
 
-<img src="figures/figure_04_0040.png" width="400px">
+<img src="figures/figure_01_0040.png" width="400px">
 
 Show violin plots for the sign score distributions across cell
 type-related clusters.
