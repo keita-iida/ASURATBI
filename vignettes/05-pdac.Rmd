@@ -84,7 +84,7 @@ for(i in seq_along(fn)){
 }
 ```
 
-```{r, eval = FALSE, echo = FALSE}
+```{r, eval = FALSE}
 rbind(dim(pdacrna[[1]]), dim(pdacrna[[2]]), dim(pdacrna[[3]]),
       dim(pdacrna[[4]]), dim(pdacrna[[5]]), dim(pdacrna[[6]]))
 ```

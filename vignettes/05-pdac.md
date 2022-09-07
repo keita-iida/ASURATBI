@@ -1,7 +1,7 @@
 Analysis of PDAC datasets (Moncada et al., 2020)
 ================
 Keita Iida
-2022-09-06
+2022-09-07
 
 -   <a href="#1-computational-environment"
     id="toc-1-computational-environment">1 Computational environment</a>
@@ -119,6 +119,11 @@ for(i in seq_along(fn)){
                                        rowData = data.frame(gene = rownames(d)),
                                        colData = data.frame(sample = colnames(d)))
 }
+```
+
+``` r
+rbind(dim(pdacrna[[1]]), dim(pdacrna[[2]]), dim(pdacrna[[3]]),
+      dim(pdacrna[[4]]), dim(pdacrna[[5]]), dim(pdacrna[[6]]))
 ```
 
           [,1]  [,2]
