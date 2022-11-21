@@ -20,7 +20,7 @@ Below are supporting information:
 
 
 ## Installation
-One can install ASURATBI by the following code:
+To install a developmental version, execute the following code:
 
 ```r
 devtools::install_github("keita-iida/ASURATBI", upgrade = "never")
