@@ -19,6 +19,15 @@ Below are supporting information:
 
 
 
+## Installation
+One can install ASURATBI by the following code:
+
+```r
+devtools::install_github("keita-iida/ASURATBI", upgrade = "never")
+```
+
+
+
 ## License
 [GPL-3](https://github.com/keita-iida/ASURATBI/blob/main/LICENSE)
 
