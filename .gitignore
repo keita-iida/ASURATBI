@@ -4,6 +4,8 @@
 .Ruserdata
 .RDataTmp
 ASURATBI.Rproj
+ASURATBI_files
+ASURATBI.BiocCheck
 backup
 rawdata
 .DS_Store
@@ -12,3 +14,5 @@ src/*.o
 src/*.so
 src/*.dll
 
+/doc/
+/Meta/

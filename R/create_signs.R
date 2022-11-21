@@ -436,6 +436,7 @@ remove_signs_redundant <- function(
     # Report format
     #--------------------------------------------------
     df <- metadata(sce)[[s_or_v[k]]]
+    df <- df[!(is.na(df$IC)), ]
     if(nrow(df) == 0){
       next
     }
