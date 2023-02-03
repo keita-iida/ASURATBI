@@ -211,7 +211,6 @@ plot_pseudotimecourse_wTree <- function(
   #--------------------------------------------------
   # Plot
   #--------------------------------------------------
-  mycol <- as.factor(mycolor[dh[[i]]$color])
   p <- ggplot2::ggplot() +
     ggplot2::geom_point(ggplot2::aes(x = df[, 1], y = df[, 2],
                                      color = as.factor(df$color)),
