@@ -252,7 +252,7 @@ plot_pseudotimecourse_woTree <- function(sce, signID, Pseudotimes, range_y){
   #--------------------------------------------------
   ind <- which(rownames(sce) == signID)
   subsce <- sce[ind, ]
-  df$score <- t(as.matrix(assay(subsce, "counts")))
+  df$score <- as.numeric(t(as.matrix(assay(subsce, "counts"))))
   dg <- numeric(0)
   for(j in seq_len(n_branch)){
     tmp <- df[which(df$branch == j),]
