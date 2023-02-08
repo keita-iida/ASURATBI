@@ -1,62 +1,16 @@
 Analysis of small cell lung cancer dataset
 ================
 Keita Iida
-2022-09-06
+2023-02-08
 
--   <a href="#1-computational-environment"
-    id="toc-1-computational-environment">1 Computational environment</a>
--   <a href="#2-install-libraries" id="toc-2-install-libraries">2 Install
-    libraries</a>
--   <a href="#3-introduction" id="toc-3-introduction">3 Introduction</a>
--   <a href="#4-prepare-scrna-seq-data" id="toc-4-prepare-scrna-seq-data">4
-    Prepare scRNA-seq data</a>
-    -   <a href="#41-sclc-with-cisplatin-treatment"
-        id="toc-41-sclc-with-cisplatin-treatment">4.1 SCLC with cisplatin
-        treatment</a>
--   <a href="#5-preprocessing" id="toc-5-preprocessing">5 Preprocessing</a>
-    -   <a href="#51-control-data-quality" id="toc-51-control-data-quality">5.1
-        Control data quality</a>
-    -   <a href="#normalization" id="toc-normalization">5.2 Normalize data</a>
--   <a href="#6-multifaceted-sign-analysis"
-    id="toc-6-multifaceted-sign-analysis">6 Multifaceted sign analysis</a>
-    -   <a href="#61-compute-correlation-matrices"
-        id="toc-61-compute-correlation-matrices">6.1 Compute correlation
-        matrices</a>
-    -   <a href="#62-load-databases" id="toc-62-load-databases">6.2 Load
-        databases</a>
-    -   <a href="#63-create-signs" id="toc-63-create-signs">6.3 Create signs</a>
-    -   <a href="#64-select-signs" id="toc-64-select-signs">6.4 Select signs</a>
-    -   <a href="#65-create-sign-by-sample-matrices"
-        id="toc-65-create-sign-by-sample-matrices">6.5 Create sign-by-sample
-        matrices</a>
-    -   <a href="#66-reduce-dimensions-of-sign-by-sample-matrices"
-        id="toc-66-reduce-dimensions-of-sign-by-sample-matrices">6.6 Reduce
-        dimensions of sign-by-sample matrices</a>
-    -   <a href="#67-cluster-cells" id="toc-67-cluster-cells">6.7 Cluster
-        cells</a>
-    -   <a href="#68-investigate-significant-signs"
-        id="toc-68-investigate-significant-signs">6.8 Investigate significant
-        signs</a>
-    -   <a href="#69-investigate-significant-genes"
-        id="toc-69-investigate-significant-genes">6.9 Investigate significant
-        genes</a>
-    -   <a href="#610-multifaceted-analysis"
-        id="toc-610-multifaceted-analysis">6.10 Multifaceted analysis</a>
-    -   <a href="#611-infer-cell-state" id="toc-611-infer-cell-state">6.11 Infer
-        cell state</a>
--   <a href="#7-using-the-existing-softwares"
-    id="toc-7-using-the-existing-softwares">7 Using the existing
-    softwares</a>
-    -   <a href="#71-seurat" id="toc-71-seurat">7.1 Seurat</a>
-
-# 1 Computational environment
+# Computational environment
 
 MacBook Pro (Big Sur, 16-inch, 2019), Processor (2.4 GHz 8-Core Intel
 Core i9), Memory (64 GB 2667 MHz DDR4).
 
 <br>
 
-# 2 Install libraries
+# Install libraries
 
 Attach necessary libraries:
 
@@ -68,7 +22,7 @@ library(SummarizedExperiment)
 
 <br>
 
-# 3 Introduction
+# Introduction
 
 In this vignette, we analyze single-cell RNA sequencing (scRNA-seq) data
 obtained from small cell lung cancer (SCLC) patients with cisplatin
@@ -76,9 +30,9 @@ treatment (Stewart et al., Nat. Cancer 1, 2020).
 
 <br>
 
-# 4 Prepare scRNA-seq data
+# Prepare scRNA-seq data
 
-## 4.1 SCLC with cisplatin treatment
+## SCLC with cisplatin treatment
 
 The data can be loaded by the following code:
 
@@ -140,9 +94,9 @@ dim(sclc)
 
 <br>
 
-# 5 Preprocessing
+# Preprocessing
 
-## 5.1 Control data quality
+## Control data quality
 
 Remove variables (genes) and samples (cells) with low quality, by
 processing the following three steps:
@@ -197,7 +151,7 @@ dev.off()
 
 <br>
 
-### 5.1.1 Remove variables based on expression profiles
+### Remove variables based on expression profiles
 
 ASURAT function `remove_variables()` removes variable (gene) data such
 that the numbers of non-zero expressing samples (cells) are less than
@@ -209,7 +163,7 @@ sclc <- remove_variables(sce = sclc, min_nsamples = 10)
 
 <br>
 
-### 5.1.2 Remove samples based on expression profiles
+### Remove samples based on expression profiles
 
 Qualities of sample (cell) data are confirmed based on proper
 visualization of `colData(sce)`.
@@ -249,7 +203,7 @@ sclc <- remove_samples(sce = sclc, min_nReads = 1400, max_nReads = 40000,
 
 <br>
 
-### 5.1.3 Remove variables based on the mean read counts
+### Remove variables based on the mean read counts
 
 Qualities of variable (gene) data are confirmed based on proper
 visualization of `rowData(sce)`.
@@ -286,7 +240,7 @@ dim(sclc)
 
 <br>
 
-## 5.2 Normalize data
+## Normalize data
 
 Perform `bayNorm()` (Tang et al., Bioinformatics, 2020) for attenuating
 technical biases with respect to zero inflation and variation of capture
@@ -331,7 +285,7 @@ rowData(sclc)$geneID <- dictionary$ENTREZID
 
 <br>
 
-# 6 Multifaceted sign analysis
+# Multifaceted sign analysis
 
 Infer cell or disease types, biological functions, and signaling pathway
 activity at the single-cell level by inputting related databases.
@@ -342,7 +296,7 @@ unsupervised clustering of samples (cells).
 
 <br>
 
-## 6.1 Compute correlation matrices
+## Compute correlation matrices
 
 Prepare correlation matrices of gene expressions.
 
@@ -353,7 +307,7 @@ cormat <- cor(mat, method = "spearman")
 
 <br>
 
-## 6.2 Load databases
+## Load databases
 
 Load databases.
 
@@ -381,7 +335,7 @@ metadata(sclcs$KG) <- list(sign = human_KEGG[["pathway"]])
 
 <br>
 
-## 6.3 Create signs
+## Create signs
 
 ASURAT function `remove_signs()` redefines functional gene sets for the
 input database by removing genes, which are not included in
@@ -429,7 +383,7 @@ sclcs$KG <- create_signs(sce = sclcs$KG, min_cnt_strg = 3, min_cnt_vari = 3)
 
 <br>
 
-## 6.4 Select signs
+## Select signs
 
 If signs have semantic similarity information, one can use ASURAT
 function `remove_signs_redundant()` for removing redundant sings using
@@ -456,7 +410,7 @@ sclcs$KG <- remove_signs_manually(sce = sclcs$KG, keywords = keywords)
 
 <br>
 
-## 6.5 Create sign-by-sample matrices
+## Create sign-by-sample matrices
 
 ASURAT function `create_sce_signmatrix()` creates a new
 SingleCellExperiment object `new_sce`, consisting of the following
@@ -478,7 +432,7 @@ sclcs$KG <- makeSignMatrix(sce = sclcs$KG, weight_strg = 0.5, weight_vari = 0.5)
 
 <br>
 
-## 6.6 Reduce dimensions of sign-by-sample matrices
+## Reduce dimensions of sign-by-sample matrices
 
 Perform diffusion map for the SSM for disease.
 
@@ -543,7 +497,7 @@ ggplot2::ggsave(file = filename, plot = p, dpi = 50, width = 4.1, height = 4.3)
 
 <br>
 
-## 6.7 Cluster cells
+## Cluster cells
 
 ``` r
 # Load customized plot functions.
@@ -552,7 +506,7 @@ source("../R/plot_additional.R")
 
 <br>
 
-### 6.7.1 Use MERLoT functions
+### Use MERLoT functions
 
 MERLoT is a useful package detecting a tree-like topology in data space.
 Using MERLoT, one can cluster cells by allocating individual cells to
@@ -628,7 +582,7 @@ dev.off()
 
 <br>
 
-### 6.7.2 Use Seurat functions
+### Use Seurat functions
 
 To date (December, 2021), one of the most useful clustering methods in
 scRNA-seq data analysis is a combination of a community detection
@@ -694,7 +648,7 @@ for(i in seq_along(dbs)){
 
 <br>
 
-### 6.7.3 Cell cycle inference using Seurat functions
+### Cell cycle inference using Seurat functions
 
 If there is gene expression data in `altExp(sce)`, we can easily infer
 cell cycle phases by using Seurat functions in the similar manner as
@@ -745,7 +699,7 @@ dev.off()
 
 <br>
 
-## 6.8 Investigate significant signs
+## Investigate significant signs
 
 Significant signs are analogous to differentially expressed genes but
 bear biological meanings. Note that naïve usages of statistical tests
@@ -787,9 +741,9 @@ sclcs_LabelDO_SignKG <- compute_sepI_all(sce = sclcs_LabelDO_SignKG,
 
 <br>
 
-## 6.9 Investigate significant genes
+## Investigate significant genes
 
-### 6.9.1 Use Seurat function
+### Use Seurat function
 
 To date (December, 2021), one of the most useful methods of multiple
 statistical tests in scRNA-seq data analysis is to use a Seurat function
@@ -813,7 +767,7 @@ metadata(sclcs$DO)$marker_genes$all <- res
 
 <br>
 
-## 6.10 Multifaceted analysis
+## Multifaceted analysis
 
 Simultaneously analyze multiple sign-by-sample matrices, which helps us
 characterize individual samples (cells) from multiple biological
@@ -889,7 +843,7 @@ gemlabel_list <- list(CellCycle = label_CC)
 ```
 
 **Tips:** If one would like to omit some color labels (e.g.,
-labels$$\[3$$\]), set the argument as follows:
+labels\[\[3\]\]), set the argument as follows:
 
 ``` r
 ssmlabel_list[[2]] <- data.frame(label = NA, color = NA)
@@ -1033,7 +987,7 @@ for(i in seq_along(vlist)){
 
 <br>
 
-## 6.11 Infer cell state
+## Infer cell state
 
 ``` r
 cell_state <- c("SCLC (Ribosome active)", "SCLC (Platinum resistance)",
@@ -1061,9 +1015,9 @@ dev.off()
 
 <br>
 
-# 7 Using the existing softwares
+# Using the existing softwares
 
-## 7.1 Seurat
+## Seurat
 
 Load the data (see [here](#normalization)).
 
@@ -1080,7 +1034,7 @@ sclc <- Seurat::CreateSeuratObject(counts = as.matrix(assay(sclc, "counts")),
 
 <br>
 
-### 7.1.1 Perform Seurat preprocessing
+### Perform Seurat preprocessing
 
 According to the Seurat protocol, normalize data, perform variance
 stabilizing transform by setting the number of variable feature, scale
@@ -1100,7 +1054,7 @@ sclc <- Seurat::RunPCA(sclc, features = Seurat::VariableFeatures(sclc))
 
 <br>
 
-### 7.1.2 Cluster cells
+### Cluster cells
 
 Compute the cumulative sum of variances, which is used for determining
 the number of the principal components (PCs).
@@ -1148,7 +1102,7 @@ ggplot2::ggsave(file = filename, plot = p, dpi = 50, width = 5.3, height = 4.5)
 
 <br>
 
-### 7.1.3 Find differentially expressed genes
+### Find differentially expressed genes
 
 Find differentially expressed genes.
 
@@ -1160,7 +1114,7 @@ View(sclc@misc$stat[which(sclc@misc$stat$p_val_adj < 10^(-100)), ])
 
 <br>
 
-### 7.1.4 Cell cycle inference
+### Cell cycle inference
 
 Assign each cell a cell cycle score using `CellCycleScoring()`.
 `obj@meta.data[["Phase"]]`.
@@ -1195,7 +1149,7 @@ ggplot2::ggsave(file = filename, plot = p, dpi = 50, width = 5.7, height = 4.5)
 
 <br>
 
-### 7.1.5 Enrichment analysis
+### Enrichment analysis
 
 Perform GO and KEGG enrichment analyses using differentially expressed
 genes, whose adjusted p-values are\<= `padj_cutoff`.
@@ -1264,7 +1218,7 @@ ggplot2::ggsave(file = filename, plot = p, dpi = 80, width = 6.5, height = 3.5)
 
 <br>
 
-### 7.1.6 Remove cell cycle
+### Remove cell cycle
 
 ``` r
 # Regress out the cell cycle effects.
